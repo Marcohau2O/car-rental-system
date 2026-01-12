@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Auto {
+  id            Int      @id @default(autoincrement())
+  marca         String
+  modelo        String
+  tipoVehiculo  String
+  anio          Int
+  precioPorDia  Float
+  descripcion   String
+  transmision   String
+  combustible   String
+  estado        String
+
+  reservaciones Reservacion[]
+  fechaCreacion DateTime @default(now())
+}
+
+model Usuario {
+  id            Int      @id @default(autoincrement())
+  nombre        String
+  correo        String   @unique
+  password      String
+  telefono      String
+  roleId        Int
+
+  rol           Rol @relation(fields: [roleId], references: [id])
+  reservaciones Reservacion[]
+  logs          Logs[]
+  fechaCreacion DateTime @default(now())
+}
+
+model Reservacion {
+  id            Int      @id @default(autoincrement())
+  confirmacion  String
+  inicio        DateTime
+  fin           DateTime
+  total         Float
+  estado        String
+
+  usuarioId Int
+  autoId    Int
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
+  auto    Auto    @relation(fields: [autoId], references: [id])
+
+  pago         Pago?
+  fechaCreacion DateTime @default(now())
+}
+
+model Pago {
+  id             Int    @id @default(autoincrement())
+  cantidad       Float
+  metodo         String
+  estado         String
+
+  reservacionId Int @unique
+  reservacion   Reservacion @relation(fields: [reservacionId], references: [id])
+
+  fechaCreacion DateTime @default(now())
+}
+
+model Rol {
+  id            Int      @id @default(autoincrement())
+  nombre        String   @unique
+
+  permisos      Permiso[]
+  usuarios      Usuario[]
+  fechaCreacion DateTime @default(now())
+}
+
+model Permiso {
+  id     Int    @id @default(autoincrement())
+  accion String @unique
+
+  rolId Int
+  rol   Rol @relation(fields: [rolId], references: [id])
+}
+
+model Logs {
+  id        Int      @id @default(autoincrement())
+  accion    String
+  descripcion String
+
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+
+  FechaCreacion DateTime @default(now())
+}

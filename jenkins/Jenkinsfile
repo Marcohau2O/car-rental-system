@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+    environment {
+        VERCEL_TOKEN = credentials('VERCEL_TOKEN')
+        VERCEL_ORG = "${env.VERCEL_ORG_ID}"
+        VERCEL_PROJECT_WEB = "${env.VERCEL_PROJECT_ID_WEB}"
+        VERCEL_PROJECT_ADMIN = "${env.VERCEL_PROJECT_ID_ADMIN}"
+        DOCKER_REGISTRY = "registry.hub.docker.com/tuorg"
+    }
+    stages {
+        stages('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Install & Lint') {
+            steps {
+                sh 'npm --version'
+                dir('services/api') { sh 'npm ci && npm run lint' }
+                dir('services/web') { sh 'npm ci && npm run lint' }
+                dir('services/admin') { sh 'npm ci && npm run lint' }
+                }
+            }
+        stage('Test') {
+            steps {
+                dir('services/api') { sh 'npm run test --silent' }
+                dir('services/web') { sh 'npm run test --silent' }
+                dir('services/admin') { sh 'npm run test --silent' }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir('services/api') { sh 'npm run build' }
+                dir('services/web') { sh 'npm run build' }
+                dir('services/admin') { sh 'npm run build' }
+            }
+        }
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                    dir('services/api') {
+                        sh "docker build -t ${DOCKER_REGISTRY}/car-rental-api:${env.BUILD_NUMBER} ."
+                        sh "docker push ${DOCKER_REGISTRY}/car-rental-api:${env.BUILD_NUMBER}"
+                    }
+                }
+            }
+        }
+        stage('Deploy frontends to Vercel') {
+            steps {
+                withEnv(["VERCEL_TOKEN=${VERCEL_TOKEN}"]) {
+                    dir('services/web') {
+                        sh 'npm i -g vercel@latest'
+                        sh 'vercel --token $VERCEL_TOKEN --confirm --prod --org $VERCEL_ORG --prod --scope $VERCEL_ORG --project $VERCEL_PROJECT_WEB'
+                    }
+                    dir('services/admin') {
+                        sh 'npm i -g vercel@latest'
+                        sh 'vercel --token $VERCEL_TOKEN --confirm --prod --org $VERCEL_ORG --project $VERCEL_PROJECT_ADMIN'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline completada con éxito.'
+        }
+        failure {
+            echo 'Pipeline falló.'
+        }
+    }
+}
