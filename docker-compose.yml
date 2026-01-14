@@ -21,9 +21,10 @@ services:
       STRIPE_SECRET: ${STRIPE_SECRET}
     ports:
       - "4000:4000"
-    # volumes:
-    #   - ./services/api/src:/app/src
-    #   - ./services/api/prisma:/app/prisma
+    volumes:
+      - ./services/api/src:/app/src
+      - ./services/api/prisma:/app/prisma
+    command: npm run dev
 
   web:
     build: ./services/web
@@ -31,9 +32,11 @@ services:
       - api
     ports:
       - "5173:5173"
-    # volumes:
-    # - ./services/web:/app
-    # command: npm run dev
+    volumes:
+    - ./services/web/src:/app/src
+    - ./services/web/vite.config.js:/app/vite.config.js
+    - ./services/web/index.html:/app/index.html
+    command: npm run dev
   
   admin:
     build: ./services/admin
@@ -41,9 +44,11 @@ services:
       - api
     ports:
       - "5000:5000"
-    # volumes:
-    # - ./services/admin:/app
-    # command: npm run dev
+    volumes:
+    - ./services/admin/src:/app/src
+    - ./services/admin/vite.config.js:/app/vite.config.js
+    - ./services/admin/index.html:/app/index.html
+    command: npm run dev
 
 volumes:
   db_data:
