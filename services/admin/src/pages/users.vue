@@ -40,7 +40,7 @@
               </tr>
             </thead>
             <tbody class="divide-y">
-              <tr v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50">
+              <tr v-for="user in paginadoAutos" :key="user.id" class="hover:bg-gray-50">
                 <td class="px-6 py-3 font-medium">{{ user.nombre }}</td>
                 <td class="px-6 py-3">{{ user.correo }}</td>
                 <td class="px-6 py-3">{{ user.telefono }}</td>
@@ -57,6 +57,43 @@
               </tr>
             </tbody>
           </table>
+          <div class="flex justify-between items-center mt-4">
+            <p class="text-sm text-gray-600">
+                Página {{ paginaActual }} de {{ totalPaginas }}
+            </p>
+
+            <div class="flex gap-1">
+              <button
+                @click="goToPagina(paginaActual - 1)"
+                :disabled="paginaActual === 1"
+                class="px-3 py-1 border rounded disabled:opacity-50"
+                >
+                Antenrior
+              </button>
+              
+              <button
+              v-for="car in totalPaginas"
+              :key="car"
+              @click="goToPagina(car)"
+              :class="[
+                'px-3 py-1 border rounded',
+                car === paginaActual
+                ? 'bg-blue-600 text-white'
+                : 'bg-white text-gray-700'
+              ]"
+              >
+              {{ car }}
+              </button>
+
+              <button
+                  @click="goToPagina(paginaActual + 1)"
+                  :disabled="paginaActual === totalPaginas"
+                  class="px-3 py-1 border rounded disabled:opacity-50"
+                  >
+                  Siguiente
+              </button>
+            </div>
+          </div>
         </div>
       </main>
     </div>
@@ -64,7 +101,7 @@
 </template>
 
 <script setup>
-    import { ref, computed, onMounted } from 'vue'
+    import { ref, computed, onMounted, watch } from 'vue'
     import Sidebar from '../components/Sidebar.vue';
     import TopBar from '../components/TopBar.vue';
     import { useNavigation } from '../composables/useNavigation';
@@ -80,6 +117,31 @@
     const selectedUser = ref(null);
 
     const users = ref([])
+
+    //paginacion
+    const paginaActual = ref(1)
+    const tamañoPagina = ref(4)
+
+    const paginadoAutos = computed(() => {
+        const start = (paginaActual.value - 1) * tamañoPagina.value
+        const end = start + tamañoPagina.value
+        return filteredUsers.value.slice(start, end)
+    })
+
+
+    const totalPaginas = computed(() =>
+        Math.ceil(filteredUsers.value.length / tamañoPagina.value)
+    )
+
+    const goToPagina = (page) => {
+        if (page >= 1 && page <= totalPaginas.value) {
+            paginaActual.value = page
+        }
+    }
+
+    watch([searchTerm, roleFilter], () => {
+        paginaActual.value = 1
+    })
 
     const editUser = (id) => goAdminUserForm(id)
 

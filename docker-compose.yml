@@ -9,7 +9,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   api:
     build: ./services/api
@@ -21,22 +21,29 @@ services:
       STRIPE_SECRET: ${STRIPE_SECRET}
     ports:
       - "4000:4000"
-    volumes:
-      - ./services/api:/app
+    # volumes:
+    #   - ./services/api/src:/app/src
+    #   - ./services/api/prisma:/app/prisma
 
   web:
     build: ./services/web
     depends_on:
       - api
     ports:
-      - "3000:80"
+      - "5173:5173"
+    # volumes:
+    # - ./services/web:/app
+    # command: npm run dev
   
   admin:
-    build: ./services/admmin
+    build: ./services/admin
     depends_on:
       - api
     ports:
-      - "3001:80"
+      - "5000:5000"
+    # volumes:
+    # - ./services/admin:/app
+    # command: npm run dev
 
 volumes:
   db_data:

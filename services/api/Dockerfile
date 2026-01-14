@@ -1,15 +1,18 @@
-FROM node:20-alpine
+FROM node:20-bookworm-slim
 
+RUN apt-get update -y \
+ && apt-get install -y openssl \
+ && rm -rf /var/lib/apt/lists/*
+ 
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm ci --only=production
+RUN npm ci
 
 COPY . .
 
-ENV NODE_ENV=production
+RUN npx prisma generate
 
 EXPOSE 4000
 
-CMD ["node", "dist/index.js"]
+CMD ["npm", "run", "dev"]
