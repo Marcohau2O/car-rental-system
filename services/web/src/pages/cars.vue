@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Navbar />
     
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8 pt-25">
       <div class="grid md:grid-cols-4 gap-8">
         <!-- Sidebar de filtros -->
         <div class="md:col-span-1">
@@ -11,28 +11,29 @@
             
             <div class="mb-6">
               <label class="block text-sm font-medium mb-2">Tipo de Vehículo</label>
-              <select v-model="filters.type" class="w-full border border-gray-300 rounded p-2">
+              <select v-model="filters.tipoVehiculo" class="w-full border border-gray-300 rounded p-2">
                 <option value="">Todos</option>
-                <option value="economy">Economía</option>
-                <option value="compact">Compacto</option>
-                <option value="sedan">Sedán</option>
-                <option value="suv">SUV</option>
-                <option value="luxury">Lujo</option>
+                <option value="Pequeño">Pequeño</option>
+                <option value="Coupe">Coupe</option>
+                <option value="Sedán">Sedán</option>
+                <option value="Suv">SUV</option>
+                <option value="Van">Van</option>
+                <option value="Mini Van">Mini Van</option>
               </select>
             </div>
 
             <div class="mb-6">
               <label class="block text-sm font-medium mb-2">Precio máximo</label>
-              <input v-model.number="filters.maxPrice" type="range" min="0" max="500" class="w-full">
-              <div class="text-sm text-gray-600 mt-2">${{ filters.maxPrice }}/día</div>
+              <input v-model.number="filters.maximoPrecio" type="range" min="0" max="500" class="w-full">
+              <div class="text-sm text-gray-600 mt-2">${{ filters.maximoPrecio }}/día</div>
             </div>
 
             <div class="mb-6">
               <label class="block text-sm font-medium mb-2">Transmisión</label>
-              <select v-model="filters.transmission" class="w-full border border-gray-300 rounded p-2">
+              <select v-model="filters.transmision" class="w-full border border-gray-300 rounded p-2">
                 <option value="">Todas</option>
-                <option value="manual">Manual</option>
-                <option value="automatic">Automática</option>
+                <option value="Manual">Manual</option>
+                <option value="Automática">Automática</option>
               </select>
             </div>
 
@@ -64,47 +65,44 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import CarCard from '../components/CarCard.vue'
 import { useNavigation } from '@/composables/useNavigation'
+import { AutoServicePublic } from '../services/autoP.service'
 
 const { goCarDetail } = useNavigation()
 
-const cars = ref([
-  { id: 1, brand: 'Toyota', model: 'Corolla', type: 'sedan', price: 45, transmission: 'automatic', image: '', rating: 4.5 },
-  { id: 2, brand: 'Honda', model: 'Civic', type: 'compact', price: 40, transmission: 'automatic', image: '', rating: 4.3 },
-  { id: 3, brand: 'Tesla', model: 'Model 3', type: 'luxury', price: 120, transmission: 'automatic', image: '', rating: 4.8 },
-  { id: 4, brand: 'Hyundai', model: 'Elantra', type: 'economy', price: 35, transmission: 'automatic', image: '', rating: 4.2 },
-  { id: 5, brand: 'Jeep', model: 'Cherokee', type: 'suv', price: 85, transmission: 'automatic', image: '', rating: 4.6 },
-  { id: 6, brand: 'BMW', model: 'Series 3', type: 'luxury', price: 150, transmission: 'automatic', image: '', rating: 4.9 },
-])
+  const cars = ref([])
 
 const filters = ref({
-  type: '',
-  maxPrice: 500,
-  transmission: '',
+  tipoVehiculo: '',
+  maximoPrecio: 500,
+  transmision: '',
+})
+
+onMounted(async () => {
+  cars.value = await AutoServicePublic.getAll();
 })
 
 const sortBy = ref('price-asc')
 
 const filteredCars = computed(() => {
   let result = cars.value.filter(car => {
-    const typeMatch = !filters.value.type || car.type === filters.value.type
-    const priceMatch = car.price <= filters.value.maxPrice
-    const transmissionMatch = !filters.value.transmission || car.transmission === filters.value.transmission
+    const typeMatch = !filters.value.tipoVehiculo || car.tipoVehiculo === filters.value.tipoVehiculo
+    const priceMatch = car.precioPorDia <= filters.value.maximoPrecio
+    const transmissionMatch = !filters.value.transmision || car.transmision === filters.value.transmision
     return typeMatch && priceMatch && transmissionMatch
   })
 
-  if (sortBy.value === 'price-asc') result.sort((a, b) => a.price - b.price)
-  if (sortBy.value === 'price-desc') result.sort((a, b) => b.price - a.price)
-  if (sortBy.value === 'rating') result.sort((a, b) => b.rating - a.rating)
+  if (sortBy.value === 'price-asc') result.sort((a, b) => a.precioPorDia - b.precioPorDia)
+  if (sortBy.value === 'price-desc') result.sort((a, b) => b.precioPorDia - a.precioPorDia)
 
   return result
 })
 
 const clearFilters = () => {
-  filters.value = { type: '', maxPrice: 500, transmission: '' }
+  filters.value = { tipoVehiculo: '', maximoPrecio: 500, transmision: '' }
 }
 
 const navigateTo = (carId) => {

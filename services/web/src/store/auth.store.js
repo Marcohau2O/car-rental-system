@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { login, logout } from "../services/auth.service"
+import { loginRequestP, registerRequestP, logout } from "../services/auth.service"
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
@@ -10,12 +10,12 @@ export const useAuthStore = defineStore("auth", {
     }),
 
     actions: {
-        async login(credenciales) {
+        async loginStore(credenciales) {
             try {
                 this.loading = true;
                 this.error = null;
 
-                const data = await login(credenciales);
+                const data = await loginRequestP(credenciales);
                 this.user = data.user;
                 this.token = data.token;
             } catch (error) {
@@ -25,11 +25,22 @@ export const useAuthStore = defineStore("auth", {
                 this.loading = false;
             }
         },
+        async registerStore(payload) {
+            try {
+                this.loading = true
+                const data = await registerRequestP(payload)
+            } catch (error) {
+                this.error = error.response?.data?.message
+                throw error
+            } finally {
+                this.loading = false
+            }
+        },
 
-        logout() {
+        logoutStore() {
             logout();
             this.user = null;
             this.token = false;
-        },
-    },
+        }
+    }
 })

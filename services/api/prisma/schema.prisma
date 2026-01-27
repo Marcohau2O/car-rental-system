@@ -18,6 +18,10 @@ model Auto {
   descripcion   String
   transmision   String
   combustible   String
+  capacidad     Int
+  cantidadpuerta  Int
+  kilometraje   String
+  imagen        String?
   estado        String
 
   reservaciones Reservacion[]

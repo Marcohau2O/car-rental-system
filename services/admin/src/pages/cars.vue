@@ -38,7 +38,20 @@
                         </thead>
                         <tbody class="divide-y">
                             <tr v-for="car in paginadoAutos" :key="car.id" class="hover:bg-gray-50">
-                                <td class="px-6 py-3">{{ car.marca }} - {{ car.modelo }}</td>
+                                <td class="px-6 py-3">
+                                    <div class="flex items-center gap-3">
+                                        <img
+                                        v-if="car.imagen"
+                                        :src="`${API_BASE_URL}${car.imagen}`" 
+                                        alt="Auto"
+                                        class="w-16 h-12 object-cover rounded border"
+                                        >
+                                        <div>
+                                            <p class="font-medium">{{ car.marca }} {{ car.modelo }}</p>
+                                            <p class="text-xs text-gray-500">{{ car.anio }}</p>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td class="px-6 py-3">{{ car.tipoVehiculo }}</td>
                                 <td class="px-6 py-3">${{ car.precioPorDia }}</td>
                                 <td class="px-6 py-3">
@@ -102,6 +115,7 @@
     import TopBar from '../components/TopBar.vue';
     import { useNavigation } from '../composables/useNavigation';
     import { AutoService } from '../services/auto.service';
+    import { API_BASE_URL } from '../config/endpoint';
 
     const { goAdminCarsForm } = useNavigation()
     
@@ -127,7 +141,7 @@
     const goToPagina = (page) => {
         if (page >= 1 && page <= totalPaginas.value) {
             paginaActual.value = page
-        }
+        }45
     }
 
     watch([searchTerm, statusFilter], () => {

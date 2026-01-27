@@ -27,11 +27,12 @@
                                     <label class="block text-sm font-medium mb-2">Tipo de Vehículo</label>
                                     <select v-model="form.tipoVehiculo" class="w-full border border-gray-300 rounded p-2" required>
                                         <option value="">Seleccionar</option>
-                                        <option value="Economía">Economía</option>
-                                        <option value="Compacto">Compacto</option>
+                                        <option value="Pequeño">Pequeño</option>
+                                        <option value="Coupe">Coupe</option>
                                         <option value="Sedán">Sedán</option>
-                                        <option value="SUV">SUV</option>
-                                        <option value="Lujo">Lujo</option>
+                                        <option value="Suv">SUV</option>
+                                        <option value="Van">Van</option>
+                                        <option value="Mini Van">Mini Van</option>
                                     </select>
                                 </div>
                                 <div>
@@ -41,6 +42,21 @@
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Precio por día</label>
                                     <input v-model.number="form.precioPorDia" type="number" placeholder="45" class="w-full border border-gray-300 rounded p-2" required>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Capacidad</label>
+                                    <input v-model.number="form.capacidad" type="number" placeholder="5" class="w-full border border-gray-300 rounded p-2" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Cantidad de Puerta</label>
+                                    <input v-model.number="form.cantidadpuerta" type="number" placeholder="4" class="w-full border border-gray-300 rounded p-2" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Kilometraje</label>
+                                    <input v-model="form.kilometraje" type="text" placeholder="5,11 / 100" class="w-full border border-gray-300 rounded p-2" required>
                                 </div>
                             </div>
 
@@ -76,10 +92,35 @@
                                     <option value="Mantenimiento">Mantenimiento</option>
                                 </select>
                             </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Imagen del vehículo</label>
+                                <input
+                                type="file"
+                                :disabled="isSubmitting"
+                                accept="image/png, image/jpeg"
+                                @change="handleImageChange"
+                                class="w-full borderm border-gray-300 rounded p-2"
+                                >
+
+                                <p v-if="imageError" class="text-red-600 text-sm mt-2">
+                                    {{ imageError }}
+                                </p>
+
+                                <div v-if="imagePreview" class="mt-4">
+                                    <p class="text.sm text-gray-600 mb-2">Vista previa:</p>
+                                    <img :src="imagePreview" class="w-full h-48 object-cover rounded-lg" alt="Preview del auto">
+                                </div>
+                            </div>
                             
                             <div class="flex gap-4 pt-6">
-                                <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded font-semibold hover:bg-blue-700">
-                                    {{ isEditing ? 'Actualizar' : 'Crear' }} Auto
+                                <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                    <span v-if="isSubmitting">
+                                        Guardando...
+                                    </span>
+                                    <span v-else>
+                                        {{ isEditing ? 'Actualizar' : 'Crear' }} Auto
+                                    </span>
                                 </button>
                                 <button type="button" @click="goBack" class="flex-1 border border-gray-300 text-gray-700 py-2 rounded font-semibold hover:bg-gray-50">
                                     Cancelar
@@ -104,6 +145,41 @@
     const route = useRoute()
     const { goAdminCars } = useNavigation()
 
+    const imageFile = ref(null)
+    const imagePreview = ref(null)
+    const imageError = ref('')
+    const isSubmitting = ref(false)
+
+    const MAX_SIZE_MB = 2
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png']
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0]
+        imageError.value = ''
+
+        if (!file) return
+
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            imageError.value = 'Solo se permiten imagenes JPG o PNG'
+            resetImage()
+            return
+        }
+
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+            imageError.value = `La imagen no debe superar ${MAX_SIZE_MB}MB`
+            resetImage()
+            return
+        }
+
+        imageFile.value = file
+        imagePreview.value = URL.createObjectURL(file)
+    }
+
+    const resetImage = () => {
+        imageFile.value = null
+        imagePreview.value = null
+    }
+
     const isEditing = ref(!!route.params.id)
 
     const form = ref({
@@ -113,9 +189,12 @@
         anio: new Date().getFullYear(),
         precioPorDia: '',
         descripcion: '',
-        transmision: 'automatic',
-        combustible: 'gasoline',
-        estado: 'available',
+        transmision: 'Automática',
+        combustible: 'Gasolina',
+        capacidad: '',
+        cantidadpuerta: '',
+        kilometraje: '',
+        estado: 'Disponible',
     })
 
     onMounted(async () => {
@@ -130,31 +209,48 @@
                 descripcion: auto.descripcion,
                 transmision: auto.transmision,
                 combustible: auto.combustible,
+                capacidad: auto.capacidad,
+                cantidadpuerta: auto.cantidadpuerta,
+                kilometraje: auto.kilometraje,
                 estado: auto.estado,
             };
+
+            if (auto.imagen) {
+                imagePreview.value = `http://localhost:4000/api${auto.imagen}`
+            }
         }
     });
 
     const handleSubmit = async () => {
-        const payload = {
-            marca: form.value.marca,
-            modelo: form.value.modelo,
-            tipoVehiculo: form.value.tipoVehiculo,
-            anio: form.value.anio,
-            precioPorDia: form.value.precioPorDia,
-            descripcion: form.value.descripcion,
-            transmision: form.value.transmision,
-            combustible: form.value.combustible,
-            estado: form.value.estado,
-        };
+        if (isSubmitting.value) return
 
-        if (isEditing.value) {
-            await AutoService.update(route.params.id, payload)
-        } else {
-            await AutoService.create(payload);
+        isSubmitting.value = true
+
+        const formData = new FormData()
+
+        Object.entries(form.value).forEach(([key, value]) => {
+            formData.append(key, value)
+        })
+
+        if (imageFile.value) {
+            formData.append('imagen', imageFile.value)
         }
 
-        goAdminCars();
+        try {
+            if (isEditing.value) {
+                await AutoService.update(route.params.id, formData)
+            } else {
+                await AutoService.create(formData);
+            }
+
+            goAdminCars();
+
+        } catch (error) {
+            console.log(error.message?.data || error)
+            alert('Error al guarda el auto')
+        } finally {
+            isSubmitting.value = false
+        }
     }
 
     const goBack = () => goAdminCars()

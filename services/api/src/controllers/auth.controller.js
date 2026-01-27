@@ -1,10 +1,14 @@
-import { registerPublicUser, loginService } from "../services/auth.service.js";
+import { registerPublicUser, loginPublicUser, loginService } from "../services/auth.service.js";
 
-export const register = async (req, res) => {
+export const registerPublic = async (req, res) => {
     const user = await registerPublicUser(req.body);
     res.status(201).json(user);
 };
 
+export const loginPublic = async(req, res) => {
+    const result = await loginPublicUser(req.body);
+    res.json(result);
+}
 // export const createUserByAdmin = async (req, res) => {
 //     const user = await adminCreateUser(req.body, req.user.id);
 //     res.status(201).json(user);

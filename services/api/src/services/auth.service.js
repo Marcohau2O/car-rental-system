@@ -11,14 +11,20 @@ export const registerPublicUser = async (data) => {
             roleId: 2,
         },
     });
-
-    await createLog({
-        accion: "REGISTER_PUBLIC",
-        descripcion: `Registro público: ${user.correo}`,
-        usuarioId: user.id,
-    });
-
+    
     return user;
+};
+
+export const loginPublicUser = async ({ correo, password }) => {
+    const user = await prisma.usuario.findUnique({ where: { correo } });
+    if (!user) throw new Error("Credenciales inválidas");
+
+    const valid = await comparePassword(password, user.password);
+    if (!valid) throw new Error("Credenciales inválidas");
+
+    const token = generateToken(user);
+
+    return { user, token };
 };
 
 // export const adminCreateUser = async (data, adminId) => {

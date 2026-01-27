@@ -5,13 +5,15 @@ import { useRouter } from "vue-router"
 export function useNavigation() {
     const router = useRouter()
 
+    const goLogin = () => router.push("/login")
+    const goRegistro = () => router.push("/registro")
     const goHome = () => router.push("/")
     const goCars = () => router.push("/cars")
     const goCarDetail = (id) => router.push(`/car-detail/${id}`)
-    const goCheckout = () => router.push("/checkout")
+    const goCheckout = (id) => router.push(`/checkout/${id}`)
     const goSuccess = () => router.push("/success")
 
     return {
-        goHome, goCars, goCarDetail, goCheckout, goSuccess
+        goLogin, goRegistro, goHome, goCars, goCarDetail, goCheckout, goSuccess
     }
 }

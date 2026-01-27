@@ -1,5 +1,7 @@
+import path from "path";
 import { AutoService } from "../services/auto.service.js";
 import { logAction } from "../utils/logAction.js";
+import fs from "fs"
 
 export const getAutos = async (_, res) => {
   res.json(await AutoService.getAll());
@@ -24,8 +26,9 @@ export const getAuto = async (req, res) => {
 };
 
 export const createAuto = async (req, res) => {
+  try {  
 
-  const {
+    const {
       marca,
       modelo,
       tipoVehiculo,
@@ -34,41 +37,92 @@ export const createAuto = async (req, res) => {
       descripcion,
       transmision,
       combustible,
+      capacidad,
+      cantidadpuerta,
+      kilometraje,
       estado,
-  } = req.body;
+    } = req.body
 
-
-  const auto = await AutoService.create({
-      marca: marca,
-      modelo: modelo,
-      tipoVehiculo: tipoVehiculo,
+    const auto = await AutoService.create({
+      marca,
+      modelo,
+      tipoVehiculo,
       anio: Number(anio),
       precioPorDia: Number(precioPorDia),
-      descripcion: descripcion,
-      transmision: transmision,
-      combustible: combustible,
-      estado: estado,
-  });
+      descripcion,
+      transmision,
+      combustible,
+      capacidad: Number(capacidad),
+      cantidadpuerta: Number(cantidadpuerta),
+      kilometraje,
+      estado,
+      imagen: `/uploads/autos/${req.file.filename}`,
+    })
 
-  await logAction( {
-    req,
-    accion: "auto:create",
-    descripcion: `Auto creado: ${auto.marca} ${auto.modelo}`,
-  })
+    await logAction({
+      req,
+      accion: "auto:create",
+      descripcion: `Auto creado: ${auto.marca} ${auto.modelo}`,
+    })
 
-  res.status(201).json(auto);
-};
+    return res.status(201).json(auto)
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Error al crear auto' })
+  }
+}
+
 
 export const updateAuto = async (req, res) => {
-  const auto = await AutoService.update(+req.params.id, req.body);
+  const id = Number(req.params.id)
+
+  const autoActual = await AutoService.getById(id)
+
+  if (!autoActual) {
+    return res.status(404).json({ message: "Auto no encontrado "})
+  }
+
+  let nuevaImagen = autoActual.imagen
+
+  if (req.file) {
+    if (autoActual.imagen) {
+      const rutaAnterior = path.resolve(
+        "uploads",
+        autoActual.imagen.replace("api/uploads/", "")
+      )
+
+      if (fs.existsSync(rutaAnterior)) {
+        fs.unlinkSync(rutaAnterior)
+      }
+    }
+
+    nuevaImagen = `/uploads/autos/${req.file.filename}`
+  }
+
+  const autoActualizado = await AutoService.update(id, {
+    marca: req.body.marca,
+    modelo: req.body.modelo,
+    tipoVehiculo: req.body.tipoVehiculo,
+    anio: Number(req.body.anio),
+    precioPorDia: Number(req.body.precioPorDia),
+    descripcion: req.body.descripcion,
+    transmision: req.body.transmision,
+    combustible: req.body.combustible,
+    capacidad: Number(req.body.capacidad),
+    cantidadpuerta: Number(req.body.cantidadpuerta),
+    kilometraje: req.body.kilometraje,
+    estado: req.body.estado,
+    imagen: nuevaImagen,
+  })
 
   await logAction({
     req,
-    accion: "UPDATE_AUTO",
-    descripcion: `Auto actualizado ID ${auto.id}`,
+    accion: "auto:update",
+    descripcion: `Auto actualizado: ${autoActualizado.marca} ${autoActualizado.modelo}`,
   })
 
-  res.json(auto)
+  res.json(autoActualizado)
 };
 
 export const deleteAuto = async (req, res) => {
