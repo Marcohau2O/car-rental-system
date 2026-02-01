@@ -1,34 +1,64 @@
 <template>
-  <div class="flex h-screen bg-gray-100">
-    <Sidebar />
-    
-    <div class="flex-1 flex flex-col">
-      <TopBar />
-      
-      <main class="flex-1 overflow-auto p-8">
-        <div class="flex justify-between items-center mb-8">
+      <Layout>
+        <div class="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-6">
           <div>
-            <h1 class="text-3xl font-bold text-gray-900">Gestión de Usuarios</h1>
-            <p class="text-gray-600">Administra los usuarios registrados</p>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Gestión de Usuarios</h1>
+            <p class="text-gray-600 text-sm md:text-base">Administra los usuarios registrados</p>
           </div>
-          <a @click="goAdminUserForm()" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700">
+          <a @click="goAdminUserForm()" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full md:w-auto">
             + Nuevo Usuario
           </a>
         </div>
 
         <!-- Filtros -->
-        <div class="bg-white p-4 rounded shadow mb-6 flex gap-4">
+        <div class="bg-white p-4 rounded shadow mb-6 flex flex-col md:flex-row gap-4">
           <input v-model="searchTerm" type="text" placeholder="Buscar usuario..." class="border border-gray-300 rounded px-3 py-2 flex-1">
-          <select v-model="roleFilter" class="border border-gray-300 rounded px-3 py-2">
+          <select v-model="roleFilter" class="border border-gray-300 rounded px-3 py-2 w-full md:w-56">
             <option value="">Todos los roles</option>
             <option value="ADMIN">Administrador</option>
-            <option value="USER">Personal</option>
+            <option value="PERSONAL">Personal</option>
+            <option value="USER">Usuarios</option>
           </select>
         </div>
 
+        <div class="md:hidden space-y-4">
+          <div v-for="user in paginadoAutos" :key="user.id" class="bg-white rounded-lg shadow p-4 space-y-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <h2 class="font-semibold text-gray-900 text-base">{{ user.nombre }}</h2>
+                <p class="text-sm text-gray-500">{{ user.correo }}</p>
+              </div>
+
+              <span :class="getRoleColor(user.rol?.nombre)" class="px-2 py-1 rounded text-xs font-semibold">
+                {{ user.rol?.nombre }}
+              </span>
+            </div>
+
+            <div class="text-sm text-gray-600 space-y-1">
+              <p>
+                <strong>Teléfono:</strong>
+                {{ user.telefono }}
+              </p>
+              <p>
+                <strong>Miembro desde:</strong>
+                {{ user.fechaCreacion }}
+              </p>
+            </div>
+
+            <div class="flex gap-3 pt-3 border-t">
+              <button @click="editUser(user.id)" class="flex-1 text-blue-600 border border-blue-600 rounded py-2 text-sm font-semibold hover:bg-blue-50">
+                Editar
+              </button>
+              <button @click="deleteUser(user.id)" class="flex-1 text-red-600 border border-red-600 rounded py-2 text-sm font-semibold hover:bg-red-50">
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Tabla -->
-        <div class="bg-white rounded shadow overflow-hidden">
-          <table class="w-full">
+        <div class="hidden md:block bg-white rounded shadow overflow-x-auto">
+          <table class="w-full min-w-[800px]">
             <thead class="bg-gray-50 border-b">
               <tr>
                 <th class="text-left px-6 py-3 font-semibold">Nombre</th>
@@ -57,12 +87,12 @@
               </tr>
             </tbody>
           </table>
-          <div class="flex justify-between items-center mt-4">
-            <p class="text-sm text-gray-600">
+          <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-6">
+            <p class="text-sm text-gray-600 text-center md:text-left">
                 Página {{ paginaActual }} de {{ totalPaginas }}
             </p>
 
-            <div class="flex gap-1">
+            <div class="flex flex-wrap justify-center gap-1">
               <button
                 @click="goToPagina(paginaActual - 1)"
                 :disabled="paginaActual === 1"
@@ -95,15 +125,14 @@
             </div>
           </div>
         </div>
-      </main>
-    </div>
-  </div>
+      </Layout>
 </template>
 
 <script setup>
     import { ref, computed, onMounted, watch } from 'vue'
     import Sidebar from '../components/Sidebar.vue';
     import TopBar from '../components/TopBar.vue';
+    import Layout from '../components/Layout.vue';
     import { useNavigation } from '../composables/useNavigation';
     import { UserService } from '../services/user.service';
 

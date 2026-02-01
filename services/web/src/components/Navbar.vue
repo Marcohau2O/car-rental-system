@@ -20,7 +20,7 @@
                     Inicia sesión
                 </button>
                 <template v-else>
-                    <button
+                    <button @click="navigateReservas"
                         class="text-gray-700 hover:text-blue-600 font-medium">
                         Mis reservas
                     </button>
@@ -58,7 +58,7 @@
                 </button>
 
                 <template v-else>
-                    <button
+                    <button @click="navigateReservas"
                         class="w-full text-left text-gray-700 font-medium">
                         Mis reservas
                     </button>
@@ -77,13 +77,14 @@
     import { useNavigation } from '../composables/useNavigation';
     import { useAuthStore } from '../store/auth.store';
 
-    const { goHome, goCars, goLogin } = useNavigation()
+    const { goHome, goCars, goLogin, goMisReservas } = useNavigation()
     const isOpen = ref(false)
     const auth = useAuthStore()
 
     const navigateHome = () => goHome()
     const navigateCars = () => goCars()
     const navigateLogin = () => goLogin()
+    const navigateReservas = () => goMisReservas()
 
     const isAutenticado = computed(() => !!auth.token)
 

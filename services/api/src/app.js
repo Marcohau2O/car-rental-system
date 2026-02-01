@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js";
 import roleRoutes from "./routes/role.routes.js";
 import userRoutes from "./routes/usuario.routes.js"
 import healthRoutes from "./routes/health.routes.js"
+import reservacionRoutes from "./routes/reservacion.routes.js"
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/api/autos", autoRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/roles", roleRoutes);
 app.use("/api/usuario", userRoutes);
+app.use("/api/reservacion", reservacionRoutes)
 app.use('/api/uploads', express.static('uploads'))
 
 app.use((req, res) => {

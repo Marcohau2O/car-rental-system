@@ -1,31 +1,76 @@
 <template>
-  <div class="flex h-screen bg-gray-100">
-    <Sidebar />
-    
-    <div class="flex-1 flex flex-col">
-      <TopBar />
-      
-      <main class="flex-1 overflow-auto p-8">
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900">Gestión de Reservaciones</h1>
-          <p class="text-gray-600">Administra todas las reservas</p>
+      <Layout>
+        <div>
+            <div class="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-6">
+              <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Gestión de Reservaciones</h1>
+              <p class="text-gray-600 text-sm md:text-base">Administra todas las reservas</p>
+            </div>
         </div>
 
         <!-- Filtros -->
-        <div class="bg-white p-4 rounded shadow mb-6 flex gap-4 flex-wrap">
-          <input v-model="searchTerm" type="text" placeholder="Buscar por cliente o reserva..." class="border border-gray-300 rounded px-3 py-2 flex-1 min-w-48">
-          <select v-model="statusFilter" class="border border-gray-300 rounded px-3 py-2">
+        <div class="bg-white p-4 rounded shadow mb-6 flex flex-col md:flex-row gap-4">
+          <input v-model="searchTerm" type="text" placeholder="Buscar por cliente o reserva..." class="border border-gray-300 rounded px-3 py-2 flex-1">
+          <select v-model="statusFilter" class="border border-gray-300 rounded px-3 py-2 w-full md:w-56">
             <option value="">Todos los estados</option>
-            <option value="confirmed">Confirmada</option>
-            <option value="inprogress">En Progreso</option>
-            <option value="completed">Completada</option>
-            <option value="cancelled">Cancelada</option>
+            <option value="CONFIRMADA">CONFIRMADA</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="COMPLETADA">COMPLETADA</option>
+            <option value="CANCELADA">CANCELADA</option>
           </select>
         </div>
 
+        <div class="md:hidden space-y-4">
+          <div
+              v-for="res in filteredReservations"             
+              :key="res.id"
+              class="bg-white rounded-lg shadow p-4 space-y-3"
+          >
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-semibold text-blue-600">
+                #{{ res.confirmacion }}
+              </span>
+
+              <span :class="getStatusColor(res.estado)" class="px-2 py-1 rounded text-xs font-semibold">
+                {{ res.estado }}
+              </span>
+            </div>
+
+            <div>
+              <p class="text-xs text-gray-500">Cliente</p>
+              <p class="font-medium text-gray-900">
+                  {{ res.usuario?.nombre }}
+              </p>
+            </div>
+
+            <div>
+              <p class="text-xs text-gray-500">Auto</p>
+              <p class="font-medium text-gray-900">
+                {{ `${res.auto.marca} ${res.auto.modelo}`}}
+              </p>
+            </div>
+
+            <div class="flex justify-between items-center pt-2 border-t">
+              <span class="font-semibold text-gray-900">
+                Total: ${{ res.total }}
+              </span>
+
+              <div class="flex gap-3">
+                <button @click="verDetallesReserva(res.id)" class="text-blue-600 text-sm font-medium">
+                  Ver
+                </button>
+
+                <button @click="cancelReservation(res.id)" class="text-red-600 text-sm font-medium">
+                  Cancelar
+
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Tabla -->
-        <div class="bg-white rounded shadow overflow-hidden">
-          <table class="w-full">
+        <div class="hidden md:block bg-white rounded shadow overflow-x-auto">
+          <table class="w-full min-w-[800px]">
             <thead class="bg-gray-50 border-b">
               <tr>
                 <th class="text-left px-6 py-3 font-semibold">Confirmación</th>
@@ -39,64 +84,74 @@
             </thead>
             <tbody class="divide-y">
               <tr v-for="res in filteredReservations" :key="res.id" class="hover:bg-gray-50">
-                <td class="px-6 py-3 text-sm font-semibold text-blue-600">#{{ res.confirmationNumber }}</td>
-                <td class="px-6 py-3">{{ res.clientName }}</td>
-                <td class="px-6 py-3">{{ res.car }}</td>
-                <td class="px-6 py-3 text-sm">{{ res.startDate }} - {{ res.endDate }}</td>
+                <td class="px-6 py-3 text-sm font-semibold text-blue-600">#{{ res.confirmacion }}</td>
+                <td class="px-6 py-3">{{ res.usuario?.nombre || '—' }}</td>
+                <td class="px-6 py-3">{{ res.auto ? `${res.auto.marca} ${res.auto.modelo}` : '—' }}</td>
+                <td class="px-6 py-3 text-sm">{{ formatDate(res.fechainicio) }} - {{ formatDate(res.fechafin) }}</td>
                 <td class="px-6 py-3 font-semibold">${{ res.total }}</td>
                 <td class="px-6 py-3">
-                  <span :class="getStatusColor(res.status)" class="px-2 py-1 rounded text-xs font-semibold">
-                    {{ res.status }}
+                  <span :class="getStatusColor(res.estado)" class="px-2 py-1 rounded text-xs font-semibold">
+                    {{ res.estado }}
                   </span>
                 </td>
                 <td class="px-6 py-3">
-                  <button @click="viewDetails(res.id)" class="text-blue-600 hover:underline text-sm mr-3">Ver</button>
+                  <button @click="verDetallesReserva(res.id)" class="text-blue-600 hover:underline text-sm mr-3">Ver</button>
                   <button @click="cancelReservation(res.id)" class="text-red-600 hover:underline text-sm">Cancelar</button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-      </main>
-    </div>
-  </div>
+      </Layout>
 </template>
 
 <script setup>
-    import { ref, computed } from 'vue'
-    import Sidebar from '../components/Sidebar.vue';
-    import TopBar from '../components/TopBar.vue';
+    import { ref, computed, onMounted } from 'vue'
+    import Layout from '../components/Layout.vue';
+    import { ReservacionService } from '../services/reservacion.service';
+    import { useNavigation } from '../composables/useNavigation';
+    
+    const { goAdminReservationsDetail } = useNavigation()
 
     const searchTerm = ref('')
     const statusFilter = ref('')
 
-    const reservations = ref([
-    { id: 1, confirmationNumber: 'RES2024001', clientName: 'Juan García', car: 'Toyota Corolla', startDate: '15 Dic', endDate: '18 Dic', total: 240, status: 'Confirmada' },
-    { id: 2, confirmationNumber: 'RES2024002', clientName: 'María López', car: 'Honda Civic', startDate: '16 Dic', endDate: '20 Dic', total: 320, status: 'En Progreso' },
-    { id: 3, confirmationNumber: 'RES2024003', clientName: 'Carlos Martín', car: 'BMW Series 3', startDate: '17 Dic', endDate: '21 Dic', total: 600, status: 'Confirmada' },
-    ])
+    const reservaciones = ref([])
 
     const filteredReservations = computed(() => {
-    return reservations.value.filter(res => {
-        const searchMatch = res.clientName.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-                        res.confirmationNumber.toLowerCase().includes(searchTerm.value.toLowerCase())
-        const statusMatch = !statusFilter.value || res.status.toLowerCase().includes(statusFilter.value.toLowerCase())
+      return reservaciones.value.filter(res => {
+        const search = searchTerm.value.toLowerCase()
+
+        const searchMatch =
+          res.confirmacion?.toLowerCase().includes(search) ||
+          res.usuario?.nombre?.toLowerCase().includes(search) ||
+          res.auto?.marca?.toLowerCase().includes(search) ||
+          res.auto?.modelo?.toLowerCase().includes(search)
+
+        const statusMatch =
+          !statusFilter.value ||
+          res.estado?.toLowerCase() === statusFilter.value.toLowerCase()
+
         return searchMatch && statusMatch
-    })
+      })
     })
 
     const getStatusColor = (status) => {
     const colors = {
-        'Confirmada': 'bg-green-100 text-green-800',
-        'En Progreso': 'bg-blue-100 text-blue-800',
-        'Completada': 'bg-gray-100 text-gray-800',
-        'Cancelada': 'bg-red-100 text-red-800',
+        'CONFIRMADA': 'bg-green-100 text-green-800',
+        'PENDIENTE': 'bg-blue-100 text-blue-800',
+        'COMPLETADA': 'bg-gray-100 text-gray-800',
+        'CANCELADA': 'bg-red-100 text-red-800',
     }
     return colors[status] || 'bg-gray-100 text-gray-800'
     }
 
-    const viewDetails = (id) => {
-    console.log('Ver detalles:', id)
+    const formatDate = (date) => {
+      return new Date(date).toLocaleDateString('ex-MX')
+    }
+
+    const verDetallesReserva = (id) => {
+      goAdminReservationsDetail(id)
     }
 
     const cancelReservation = (id) => {
@@ -105,4 +160,13 @@
         if (reservation) reservation.status = 'Cancelada'
     }
     }
+
+    onMounted(async () => {
+      try {
+        reservaciones.value = await ReservacionService.getAll()
+      } catch (error) {
+        console.error(error)
+        alert('Error al cargar las reservaciones')
+      }
+    })
 </script>

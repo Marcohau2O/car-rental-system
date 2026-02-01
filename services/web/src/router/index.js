@@ -7,6 +7,7 @@ import Checkout from '../pages/checkout.vue'
 import Success from '../pages/success.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
+import misReservas from '../pages/misReservas.vue'
 
 const routes = [
     {
@@ -26,6 +27,12 @@ const routes = [
         name: 'registro',
         component: Register,
         meta: { title: "AutoRent - Inicio Sesión", guestOnly: true}
+    },
+    {
+        path: '/MisReservas',
+        name: 'MisReservas',
+        component: misReservas,
+        meta: { title: "AutoRent - Mis Reservas", requiresAuth: true }
     },
     {
         path: '/cars',

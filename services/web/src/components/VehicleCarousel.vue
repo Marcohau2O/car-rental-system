@@ -31,7 +31,7 @@
                                 </p>
 
                                 <ul class="grid grid-cols-2 gap-3 text-sm text-gray-600 mt-4">
-                                    <li>🚪 {{ car.cantidadPuertas }} puertas</li>
+                                    <li>🚪 {{ car.cantidadpuerta }} puertas</li>
                                     <li>⛽ {{ car.combustible }}</li>
                                     <li>⚙️ {{ car.transmision }}</li>
                                     <li>🛣 {{ car.kilometraje }} km</li>
@@ -39,7 +39,7 @@
                                 </ul>
                             </div>
 
-                            <button class="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition">
+                            <button @click="navigateTo(car.id)" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition">
                                 Reservar Ahora
                             </button>
                         </div>
@@ -67,6 +67,7 @@
 <script setup>
     import { ref } from 'vue';
     import { API_PUBLIC_URL } from '../config/endpointPublic';
+    import { useNavigation } from '../composables/useNavigation';
 
     const props = defineProps({
         vehicles: {
@@ -75,6 +76,7 @@
         }
     })
 
+    const { goCarDetail } = useNavigation()
     const currentIndex = ref(0)
 
     const next = () => {
@@ -92,5 +94,9 @@
     const getImagen = (imagen) => {
         if (!imagen) return '/no-imagen.png'
         return `${API_PUBLIC_URL}${imagen}`
+    }
+
+    const navigateTo = (carId) => {
+        goCarDetail(carId)
     }
 </script>

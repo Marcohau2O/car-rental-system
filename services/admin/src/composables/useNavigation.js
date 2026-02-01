@@ -20,6 +20,7 @@ export function useNavigation() {
     }
     const goAdminReservations = () => router.push("/admin/reservations")
     const goAdminUsers = () => router.push("/admin/users")
+    const goAdminReservationsDetail = (id) => router.push(`/admin/reservations/${id}`)
 
 
     return {
@@ -30,5 +31,6 @@ export function useNavigation() {
         goAdminUserForm,
         goAdminReservations,
         goAdminUsers,
+        goAdminReservationsDetail
     }
 }

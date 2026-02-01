@@ -8,6 +8,7 @@ import AdminCarsForm from '@/pages/cars-form.vue'
 import AdminUserForm from '@/pages/user-form.vue'
 import AdminReservations from '@/pages/reservations.vue'
 import AdminUsers from '@/pages/users.vue'
+import AdminReservasDetails from '@/pages/reservacion-detail.vue'
 
 const routes = [
     // Admin Routes
@@ -50,6 +51,11 @@ const routes = [
     path: "/admin/reservations",
     component: AdminReservations,
     meta: { title: "Reservaciones - Admin", requiresAuth: true },
+  },
+  {
+    path: "/admin/reservations/:id",
+    component: AdminReservasDetails,
+    meta: { title: "Reservacion Detallada - Admin", requiresAuth: true },
   },
   {
     path: "/admin/users",

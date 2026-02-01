@@ -22,6 +22,14 @@ async function main() {
     }
   })
 
+  const personalRole = await prisma.rol.upsert({
+    where: { nombre: "PERSONAL" },
+    update: {},
+    create: {
+      nombre: "PERSONAL"
+    }
+  })
+
   const permisos = [
     "user:create",
     "user:update",

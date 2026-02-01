@@ -45,10 +45,13 @@ model Usuario {
 model Reservacion {
   id            Int      @id @default(autoincrement())
   confirmacion  String
-  inicio        DateTime
-  fin           DateTime
+  fechainicio   DateTime
+  fechafin      DateTime
   total         Float
   estado        String
+  seguro        Boolean
+  sillabebe     Boolean
+  licencia      String?
 
   usuarioId Int
   autoId    Int
