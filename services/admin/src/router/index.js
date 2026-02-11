@@ -9,6 +9,7 @@ import AdminUserForm from '@/pages/user-form.vue'
 import AdminReservations from '@/pages/reservations.vue'
 import AdminUsers from '@/pages/users.vue'
 import AdminReservasDetails from '@/pages/reservacion-detail.vue'
+import AdminCalendario from "@/pages/calendario.vue"
 
 const routes = [
     // Admin Routes
@@ -61,6 +62,11 @@ const routes = [
     path: "/admin/users",
     component: AdminUsers,
     meta: { title: "Usuarios - Admin", requiresAuth: true },
+  },
+  {
+    path: "/admin/calendario",
+    component: AdminCalendario,
+    meta: { title: "Calendarion - Admin", requiresAuth: true },
   },
   {
     path: "/:pathMatch(.*)*",

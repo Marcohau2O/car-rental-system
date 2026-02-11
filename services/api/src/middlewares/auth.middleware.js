@@ -13,14 +13,20 @@ export const authMiddleware = async (req, res, next) => {
       where: { id: decoded.id },
       include: {
         rol: {
-          include: { permisos: true },
+          include: {
+            permisos: {
+              include: {
+                permiso: true
+              }
+            }
+          },
         },
       },
     });
 
     if (!user) throw new Error("Usuario no encontrado");
 
-    const permissions = user.rol.permisos.map(p => p.accion);
+    const permissions = user.rol.permisos.map(p => p.permiso.accion);
 
     req.user = {
       id: user.id,

@@ -24,7 +24,7 @@ export const loginPublicUser = async ({ correo, password }) => {
 
     const token = generateToken(user);
 
-    return { user, token };
+    return { token };
 };
 
 // export const adminCreateUser = async (data, adminId) => {
@@ -59,5 +59,5 @@ export const loginService = async ({ correo, password }) => {
         usuarioId: user.id,
     });
 
-    return { user, token };
+    return { token };
 };

@@ -21,7 +21,13 @@
           </select>
         </div>
 
-        <div class="md:hidden space-y-4">
+        <div v-if="loading" class="md:hidden">
+            <div class="py-10">
+                <Spinner />
+            </div>
+        </div>
+        
+        <div v-else class="md:hidden space-y-4">
           <div v-for="user in paginadoAutos" :key="user.id" class="bg-white rounded-lg shadow p-4 space-y-3">
             <div class="flex justify-between items-start">
               <div>
@@ -70,7 +76,12 @@
               </tr>
             </thead>
             <tbody class="divide-y">
-              <tr v-for="user in paginadoAutos" :key="user.id" class="hover:bg-gray-50">
+              <tr v-if="loading">
+                <td colspan="5", class="py-10">
+                  <Spinner />
+                </td>
+              </tr>
+              <tr v-else v-for="user in paginadoAutos" :key="user.id" class="hover:bg-gray-50">
                 <td class="px-6 py-3 font-medium">{{ user.nombre }}</td>
                 <td class="px-6 py-3">{{ user.correo }}</td>
                 <td class="px-6 py-3">{{ user.telefono }}</td>
@@ -135,6 +146,7 @@
     import Layout from '../components/Layout.vue';
     import { useNavigation } from '../composables/useNavigation';
     import { UserService } from '../services/user.service';
+    import Spinner from '../components/Spinner.vue';
 
 
     const { goAdminUserForm } = useNavigation()
@@ -150,6 +162,8 @@
     //paginacion
     const paginaActual = ref(1)
     const tamañoPagina = ref(4)
+
+    const loading = ref(true)
 
     const paginadoAutos = computed(() => {
         const start = (paginaActual.value - 1) * tamañoPagina.value
@@ -175,7 +189,15 @@
     const editUser = (id) => goAdminUserForm(id)
 
     onMounted(async () => {
-      users.value = await UserService.getAll();
+      try {
+        const usuarios = await UserService.getAll()
+
+        await new Promise(r => setTimeout(r, 500))
+
+        users.value = usuarios
+      } finally {
+        loading.value = false
+      }
     })
 
     const filteredUsers = computed(() => {
@@ -191,6 +213,7 @@
             const colors = {
                 'ADMIN': 'bg-red-100 text-red-800',
                 'USER': 'bg-blue-100 text-blue-800',
+                'PERSONAL': 'bg-yellow-100 text-yellow-800',
             }
         return colors[role] || 'bg-gray-100 text-gray-800'
     }

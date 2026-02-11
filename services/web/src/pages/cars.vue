@@ -24,7 +24,7 @@
 
             <div class="mb-6">
               <label class="block text-sm font-medium mb-2">Precio máximo</label>
-              <input v-model.number="filters.maximoPrecio" type="range" min="0" max="500" class="w-full">
+              <input v-model.number="filters.maximoPrecio" type="range" min="0" max="5000" class="w-full">
               <div class="text-sm text-gray-600 mt-2">${{ filters.maximoPrecio }}/día</div>
             </div>
 
@@ -70,19 +70,30 @@ import Navbar from '../components/Navbar.vue'
 import CarCard from '../components/CarCard.vue'
 import { useNavigation } from '@/composables/useNavigation'
 import { AutoServicePublic } from '../services/autoP.service'
+import { useRoute } from 'vue-router'
 
 const { goCarDetail } = useNavigation()
 
   const cars = ref([])
+  const capacidadBuscada = ref(null)
+  const fechaInicio = ref(null)
+  const fechaFin = ref(null)
 
 const filters = ref({
   tipoVehiculo: '',
-  maximoPrecio: 500,
+  maximoPrecio: 5000,
   transmision: '',
 })
 
+const route = useRoute()
+
 onMounted(async () => {
+  const query = route.query
   cars.value = await AutoServicePublic.getAll();
+  if (query.tipoAuto) filters.value.tipoVehiculo = query.tipoAuto
+  if (query.personas) capacidadBuscada.value = Number(query.personas)
+  if (query.fechaInicio) fechaInicio.value = query.fechaInicio
+  if (query.fechaFin) fechaFin.value = query.fechaFin
 })
 
 const sortBy = ref('price-asc')

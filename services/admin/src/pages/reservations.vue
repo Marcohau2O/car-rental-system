@@ -19,6 +19,12 @@
           </select>
         </div>
 
+        <div v-if="loading" class="md:hidden">
+            <div class="py-10">
+                <Spinner />
+            </div>
+        </div>
+
         <div class="md:hidden space-y-4">
           <div
               v-for="res in filteredReservations"             
@@ -83,7 +89,12 @@
               </tr>
             </thead>
             <tbody class="divide-y">
-              <tr v-for="res in filteredReservations" :key="res.id" class="hover:bg-gray-50">
+              <tr v-if="loading">
+                <td colspan="5", class="py-10">
+                  <Spinner />
+                </td>
+              </tr>
+              <tr v-else v-for="res in filteredReservations" :key="res.id" class="hover:bg-gray-50">
                 <td class="px-6 py-3 text-sm font-semibold text-blue-600">#{{ res.confirmacion }}</td>
                 <td class="px-6 py-3">{{ res.usuario?.nombre || '—' }}</td>
                 <td class="px-6 py-3">{{ res.auto ? `${res.auto.marca} ${res.auto.modelo}` : '—' }}</td>
@@ -95,12 +106,50 @@
                   </span>
                 </td>
                 <td class="px-6 py-3">
-                  <button @click="verDetallesReserva(res.id)" class="text-blue-600 hover:underline text-sm mr-3">Ver</button>
-                  <button @click="cancelReservation(res.id)" class="text-red-600 hover:underline text-sm">Cancelar</button>
+                  <button v-if="hasRole([1,3])" @click="verDetallesReserva(res.id)" class="text-blue-600 hover:underline text-sm mr-3">Ver</button>
+                  <button v-if="hasRole([1,3])" @click="cancelReservation(res.id)" class="text-red-800 hover:underline text-sm">Cancelar</button>
+                  <button v-if="hasRole([1])" class="text-red-600 hover:underline text-sm">Eliminar</button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-6">
+            <p class="text-sm text-gray-600 text-center md:text-left">
+              Página {{ paginaActual }} de {{ totalPaginas }}
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-1">
+              <button
+                @click="goToPagina(paginaActual - 1)"
+                :disabled="paginaActual === 1"
+                class="px-3 py-1 border rounded disabled:opacity-50"
+                >
+                Antenrior
+              </button>
+
+              <button
+                v-for="res in totalPaginas"
+                :key="res"
+                @click="goToPagina(res)"
+                :class="[
+                  'px-3 py-1 border rounded',
+                  car === paginaActual
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-700'
+                ]"
+                >
+                {{ res }}
+              </button>
+
+              <button
+                  @click="goToPagina(paginaActual + 1)"
+                  :disabled="paginaActual === totalPaginas"
+                  class="px-3 py-1 border rounded disabled:opacity-50"
+                  >
+                  Siguiente
+              </button>
+            </div>
+          </div>
         </div>
       </Layout>
 </template>
@@ -110,6 +159,8 @@
     import Layout from '../components/Layout.vue';
     import { ReservacionService } from '../services/reservacion.service';
     import { useNavigation } from '../composables/useNavigation';
+    import { getUser } from '../utils/auth';
+    import Spinner from '../components/Spinner.vue';
     
     const { goAdminReservationsDetail } = useNavigation()
 
@@ -117,6 +168,28 @@
     const statusFilter = ref('')
 
     const reservaciones = ref([])
+
+    const loading = ref(true)
+
+    const paginaActual = ref(1)
+    const tamañoPagina = ref(4)
+
+    const paginadoAutos = computed(() => {
+        const start = (paginaActual.value - 1) * tamañoPagina.value
+        const end = start + tamañoPagina.value
+        return filteredUsers.value.slice(start, end)
+    })
+
+
+    const totalPaginas = computed(() =>
+        Math.ceil(filteredReservations.value.length / tamañoPagina.value)
+    )
+
+    const goToPagina = (page) => {
+        if (page >= 1 && page <= totalPaginas.value) {
+            paginaActual.value = page
+        }
+    }
 
     const filteredReservations = computed(() => {
       return reservaciones.value.filter(res => {
@@ -161,12 +234,22 @@
     }
     }
 
+    const RolUsuario = computed(() => getUser())
+
+    const hasRole = (roles = []) => {
+        if (!RolUsuario.value) return false
+        return roles.includes(RolUsuario.value.roleId)
+    }
+
     onMounted(async () => {
       try {
-        reservaciones.value = await ReservacionService.getAll()
-      } catch (error) {
-        console.error(error)
-        alert('Error al cargar las reservaciones')
+        const reservas = await ReservacionService.getAll()
+
+        await new Promise(r => setTimeout(r, 500))
+
+        reservaciones.value = reservas
+      } finally {
+        loading.value = false
       }
     })
 </script>

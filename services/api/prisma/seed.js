@@ -34,23 +34,68 @@ async function main() {
     "user:create",
     "user:update",
     "user:delete",
+
     "auto:create",
     "auto:update",
     "auto:delete",
+
+    "dashboard:view",
+    "reservas:view",
+    "calendario:view",
   ];
 
+  const permisosCreados = {};
+
   for (const accion of permisos) {
-    await prisma.permiso.upsert({
+    const permiso = await prisma.permiso.upsert({
       where: { accion },
       update: {},
+      create: { accion }
+    });
+    permisosCreados[accion] = permiso.id;
+  }
+
+  for (const accion of permisos) {
+    await prisma.RolPermiso.upsert({
+      where: {
+        rolId_permisoId: {
+          rolId: adminRole.id,
+          permisoId: permisosCreados[accion]
+        }
+      },
+      update: {},
       create: {
-        accion,
-        rolId: adminRole.id
+        rolId: adminRole.id,
+        permisoId: permisosCreados[accion]
+      }
+    });
+  }
+
+  const permisosPersonal = [
+    "dashboard:view",
+    "reservas:view",
+    "calendario:view",
+    "auto:update"
+  ];
+
+  for (const accion of permisosPersonal) {
+    await prisma.RolPermiso.upsert({
+      where: {
+        rolId_permisoId: {
+          rolId: personalRole.id,
+          permisoId: permisosCreados[accion]
+        }
+      },
+      update: {},
+      create: {
+        rolId: personalRole.id,
+        permisoId: permisosCreados[accion]
       }
     });
   }
 
   const passwordHash = await bcrypt.hash("admin123", 10);
+  const personalPass = await bcrypt.hash("personal123", 10);
 
   const adminUser = await prisma.usuario.upsert({
     where: { correo: "admin@admin.com" },
@@ -64,12 +109,24 @@ async function main() {
     }
   });
 
-  console.log("✅ ADMIN creado correctamente");
+  await prisma.usuario.upsert({
+    where: { correo: "personal@personal.com" },
+    update: {},
+    create: {
+      nombre: "Personal Demo",
+      correo: "personal@personal.com",
+      password: personalPass,
+      telefono: "8888888888",
+      roleId: personalRole.id
+    }
+  })
+
+  console.log("✅ Usuarios Creados con su Roles y Permisos");
 
   await prisma.logs.create({
     data: {
-      accion: "CREATE_ADMIN",
-      descripcion: "Se creó el ADMIN inicial",
+      accion: "SEED_ SISTEMA",
+      descripcion: "Sistema incial creado con roles y permisos",
       usuarioId: adminUser.id
     }
   });

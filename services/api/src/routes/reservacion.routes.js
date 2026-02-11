@@ -13,7 +13,7 @@ router.post('/', authMiddleware, uploadLicenciaImage.single('licencia'), crearRe
 
 //administrador
 router.put('/:id/estado', authMiddleware, checkPermission("reservation:updatestatus"), cambiarEstado)
-router.get('/:id', authMiddleware, obtenerReservacion) // En esta ruta tiene que ir una checkPermission para los empleados 
+router.get('/:id', authMiddleware, checkPermission("reservas:view"), obtenerReservacion) // En esta ruta tiene que ir una checkPermission para los empleados 
 
 
 export default router;

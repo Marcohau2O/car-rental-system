@@ -30,7 +30,7 @@ export const UsuarioService = {
       data: {
         nombre: data.nombre,
         correo: data.correo,
-        telefono: data.telefono,
+        telefono: String(data.telefono),
         password: hashedPassword,
         roleId: data.roleId
       }

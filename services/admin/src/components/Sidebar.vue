@@ -12,17 +12,20 @@
         </div>
 
         <nav class="flex-1 p-4 space-y-2">
-            <button @click="goAdminDashboard" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
+            <button v-if="hasRoles([1,3])" @click="goAdminDashboard" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
                 📊 Dashboard
             </button>
-            <button @click="goAdminCars" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
+            <button v-if="hasRoles([1,3])" @click="goAdminCars" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
                 🚗 Gestión de Autos
             </button>
-            <button @click="goAdminReservations" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
+            <button v-if="hasRoles([1,3])" @click="goAdminReservations" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
                 📋 Reservaciones
             </button>
-            <button @click="goAdminUsers" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
+            <button v-if="hasRoles([1])" @click="goAdminUsers" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
                 👥 Usuarios
+            </button>
+            <button v-if="hasRoles([1,3])" @click="goAdminCalendario" class="block px-4 py-2 rounded hover:bg-gray-800 transition cursor-pointer">
+                📊 Calendario
             </button>
             <!-- <a href="#" class="block px-4 py-2 rounded hover:bg-gray-800 transition">
                 📊 Reportes
@@ -41,13 +44,22 @@
 </template>
 
 <script setup>
+    import { computed } from 'vue'
     import { useNavigation } from '../composables/useNavigation';
     import { useAuthStore } from '../stores/auth.store'
+    import { getUser } from '../utils/auth';
 
     //logoutAdmin from ../utils/auth
      const auth = useAuthStore();
 
-    const { goAdminDashboard, goAdminCars, goAdminReservations, goAdminUsers, goAdminLogin } = useNavigation()
+    const { goAdminDashboard, goAdminCars, goAdminReservations, goAdminUsers, goAdminLogin, goAdminCalendario } = useNavigation()
+
+    const RolUsuario = computed(() => getUser())
+
+    const hasRoles = (roles = []) => {
+        if (!RolUsuario.value) return false
+        return roles.includes(RolUsuario.value.roleId)
+    }
 
     const logout = () => {
         auth.logout();

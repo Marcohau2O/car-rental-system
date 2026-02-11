@@ -1,9 +1,10 @@
 import { defineStore } from "pinia"
 import { login, logout } from "../services/auth.service"
+import { getUser } from "../utils/auth";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        user: JSON.parse(sessionStorage.getItem("user")) || null,
+        user: getUser(),
         token: sessionStorage.getItem("token"),
         loading: false,
         error: null,
@@ -16,7 +17,7 @@ export const useAuthStore = defineStore("auth", {
                 this.error = null;
 
                 const data = await login(credenciales);
-                this.user = data.user;
+                this.user = getUser()
                 this.token = data.token;
             } catch (error) {
                 this.error = error.response?.data?.message || "Error al iniciar session";

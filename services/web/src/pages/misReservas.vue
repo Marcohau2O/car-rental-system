@@ -40,6 +40,13 @@
                 </p>
 
                 <p class="text-sm text-gray-600">
+                    Horas:
+                    {{ reserva.horainicio }}
+                    →
+                    {{ reserva.horafin }}
+                </p>
+
+                <p class="text-sm text-gray-600">
                     Seguro:
                     <span :class="reserva.seguro ? 'text-green-600' : 'text-red-600'">
                         {{ reserva.seguro ? 'Incluido' : 'No Incluido' }}

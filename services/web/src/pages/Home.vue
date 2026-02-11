@@ -117,11 +117,12 @@ import Footer from '../components/Footer.vue'
 import VehicleCarousel from '../components/VehicleCarousel.vue'
 import Testimonios from '../components/Testimonios.vue'
 import ComoTrabajar from '../components/ComoTrabajar.vue'
+import { useRouter } from 'vue-router'
 
 import { AutoServicePublic } from '../services/autoP.service'
 
 const vehicles = ref([])
-
+const router = useRouter()
 const searchSection = ref(null)
 
 const scrollToSearch = () => {
@@ -130,7 +131,18 @@ const scrollToSearch = () => {
 
 const handleSearch = (criteria) => {
   console.log('Búsqueda:', criteria)
-  useNavigation().goCars()
+//   useNavigation().goCars()
+    router.push({
+        path: "/cars",
+         query: {
+            fechaInicio: criteria.fechaInicio,
+            horaInicio: criteria.horaInicio,
+            fechaFin: criteria.fechaFin,
+            horaFin: criteria.horaFin,
+            personas: criteria.personas,
+            tipoAuto: criteria.tipoAuto
+        }
+    })
 }
 
 onMounted(async () => {

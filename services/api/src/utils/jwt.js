@@ -6,6 +6,8 @@ export const generateToken = (user) => {
     return jwt.sign({
         id: user.id,
         roleId: user.roleId,
+        nombre: user.nombre,
+        correo: user.correo
     },
     JWT_SECRET,
     { expiresIn: "8h" }

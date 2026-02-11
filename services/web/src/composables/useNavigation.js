@@ -9,7 +9,7 @@ export function useNavigation() {
     const goRegistro = () => router.push("/registro")
     const goHome = () => router.push("/")
     const goMisReservas = () => router.push("/MisReservas")
-    const goCars = () => router.push("/cars")
+    const goCars = (filtros = {}) => { router.push({ path:"/cars", query: filtros}) }
     const goCarDetail = (id) => router.push(`/car-detail/${id}`)
     const goCheckout = (id) => router.push(`/checkout/${id}`)
     const goSuccess = () => router.push("/success")

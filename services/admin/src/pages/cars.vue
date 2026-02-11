@@ -10,7 +10,7 @@
                     </p>
             </div>
             
-            <button @click="goAdminCarsForm()" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full md:w-auto">
+            <button v-if="hasRole([1])" @click="goAdminCarsForm()" class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 w-full md:w-auto">
                 + Añadir Auto
             </button>
         </div>
@@ -24,7 +24,14 @@
                     <option value="Mantenimiento">Mantenimiento</option>
                </select>
         </div>
-        <div class="md:hidden space-y-4">
+
+        <div v-if="loading" class="md:hidden">
+            <div class="py-10">
+                <Spinner />
+            </div>
+        </div>
+
+        <div v-else class="md:hidden space-y-4">
             <div v-for="car in paginadoAutos":key="car.id" class="bg-white rounded shadow p-4">
                 <div class="flex gap-4">
                     <img v-if="car.imagen" :src="`${API_BASE_URL}${car.imagen}`" class="w-24 h-16 object-cover rounded border">
@@ -46,10 +53,10 @@
                 </div>
 
                 <div class="flex gap-4 mt-4">
-                    <button @click="editCar(car.id)" class="text-blue-600 text-sm font-medium">
+                    <button v-if="hasRole([1, 3])" @click="editCar(car.id)" class="text-blue-600 text-sm font-medium">
                         Editar
                     </button>
-                    <button @click="deleteCar(car.id)" class="text-red-600 text-sm font-medium">
+                    <button v-if="hasRole([1])" @click="deleteCar(car.id)" class="text-red-600 text-sm font-medium">
                         Eliminar
                     </button>
                 </div>
@@ -68,7 +75,12 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y">
-                    <tr v-for="car in paginadoAutos" :key="car.id" class="hover:bg-gray-50">
+                    <tr v-if="loading">
+                        <td colspan="5", class="py-10">
+                            <Spinner />
+                        </td>
+                    </tr>
+                    <tr v-else v-for="car in paginadoAutos" :key="car.id" class="hover:bg-gray-50">
                         <td class="px-6 py-3">
                             <div class="flex items-center gap-3">
                                 <img v-if="car.imagen" :src="`${API_BASE_URL}${car.imagen}`" class="w-16 h-12 object-cover rounded border">
@@ -90,10 +102,10 @@
                             </span>
                         </td>
                         <td class="px-6 py-3">
-                            <button @click="editCar(car.id)" class="text-blue-600 mr-3">
+                            <button v-if="hasRole([1,3])" @click="editCar(car.id)" class="text-blue-600 mr-3">
                                 Editar
                             </button>
-                            <button @click="deleteCar(car.id)" class="text-red-600">
+                            <button v-if="hasRole([1])" @click="deleteCar(car.id)" class="text-red-600">
                                 Eliminar
                             </button>
                             </td>
@@ -136,6 +148,8 @@
     import { useNavigation } from '../composables/useNavigation';
     import { AutoService } from '../services/auto.service';
     import { API_BASE_URL } from '../config/endpoint';
+    import { getUser } from '../utils/auth';
+    import Spinner from '../components/Spinner.vue';
 
     const { goAdminCarsForm } = useNavigation()
     
@@ -147,12 +161,20 @@
     const paginaActual = ref(1)
     const tamañoPagina = ref(4)
 
+    const loading = ref(true)
+
     const paginadoAutos = computed(() => {
         const start = (paginaActual.value - 1) * tamañoPagina.value
         const end = start + tamañoPagina.value
         return filteredCars.value.slice(start, end)
     })
 
+    const RolUsuario = computed(() => getUser())
+
+    const hasRole = (roles = []) => {
+        if (!RolUsuario.value) return false
+        return roles.includes(RolUsuario.value.roleId)
+    }
 
     const totalPaginas = computed(() =>
         Math.ceil(filteredCars.value.length / tamañoPagina.value)
@@ -169,7 +191,15 @@
     })
 
     onMounted(async () => {
-        cars.value = await AutoService.getAll();
+        try {
+            const autos = await AutoService.getAll()
+            
+            await new Promise(r => setTimeout(r, 500))
+
+            cars.value = autos
+        } finally {
+            loading.value = false
+        }
     })
  
     const filteredCars = computed(() => {

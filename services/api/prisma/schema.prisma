@@ -47,6 +47,8 @@ model Reservacion {
   confirmacion  String
   fechainicio   DateTime
   fechafin      DateTime
+  horainicio    String
+  horafin       String
   total         Float
   estado        String
   seguro        Boolean
@@ -79,7 +81,7 @@ model Rol {
   id            Int      @id @default(autoincrement())
   nombre        String   @unique
 
-  permisos      Permiso[]
+  permisos      RolPermiso[]
   usuarios      Usuario[]
   fechaCreacion DateTime @default(now())
 }
@@ -88,8 +90,19 @@ model Permiso {
   id     Int    @id @default(autoincrement())
   accion String @unique
 
-  rolId Int
-  rol   Rol @relation(fields: [rolId], references: [id])
+  roles RolPermiso[]
+}
+
+model RolPermiso {
+  id Int @id @default(autoincrement())
+
+  rolId     Int
+  permisoId Int
+
+  rol     Rol     @relation(fields: [rolId], references: [id])
+  permiso Permiso @relation(fields: [permisoId], references: [id])
+
+  @@unique([rolId, permisoId])
 }
 
 model Logs {

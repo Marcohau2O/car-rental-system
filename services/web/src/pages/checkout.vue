@@ -13,11 +13,21 @@
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Fecha de recogida</label>
-                                    <input v-model="reservacion.fechainicio" type="date" class="w-full border border-gray-300 rounded p-2">
+                                    <input v-model="reservacion.fechainicio" type="date" :min="Dia" class="w-full border border-gray-300 rounded p-2">
                                 </div>
                                 <div>
+                                    <label class="block text-sm font-medium mb-2">Hora recogida</label>
+                                    <input v-model="reservacion.horainicio" type="time" :min="reservacion.fechainicio === Dia ? horaActual : '08:00'" max="20:00" class="w-full border border-gray-300 rounded p-2">
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4 p-1">
+                                <div>
                                     <label class="block text-sm font-medium mb-2">Fecha de retorno</label>
-                                    <input v-model="reservacion.fechafin" :min="reservacion.fechainicio" type="date" class="w-full border border-gray-300 rounded p-2">
+                                    <input v-model="reservacion.fechafin" :min="reservacion.fechainicio || Dia" type="date" class="w-full border border-gray-300 rounded p-2">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Hora fin</label>
+                                    <input type="time" min="08:00" max="20:00" class="w-full border border-gray-300 rounded p-2">
                                 </div>
                             </div>
                         </div>
@@ -161,6 +171,8 @@
     const licenciaPreview = ref(null)
     const licenciaError = ref('')
     const isSubmitting = ref(false)
+    const Dia = ref("")
+    const horaActual = ref("")
 
     const MAX_SIZE_MB = 2
     const ALLOWED_TYPES = ['image/jpeg', 'image/png']
@@ -175,6 +187,8 @@
     const reservacion = ref({
         fechainicio: '',
         fechafin: '',
+        horainicio: '',
+        horafin: '',
         lugarRetiro: '',
         lugarDevolucion: '',
         seguro: false,
@@ -239,6 +253,11 @@
         return subtotal.value + costoSeguro.value + additionalsCost.value
     })
 
+    const validarHoras = (hora) => {
+        if (!hora) return true
+        return hora >= "08:00" && hora <= "20:00"
+    }
+
     const goToPayment = async () => {
         if (isSubmitting.value) return
 
@@ -252,12 +271,19 @@
             return
         }
 
+        if (!validarHoras(reservacion.value.horainicio) || !validarHoras(reservacion.value.horafin)) {
+            alert("Horario solo disponible de 8:00 AM a 8:00 PM")
+            return
+        }
+
         isSubmitting.value = true
 
         const formData = new FormData()
 
         formData.append('fechainicio', reservacion.value.fechainicio)
         formData.append('fechafin', reservacion.value.fechafin)
+        formData.append('horainicio', reservacion.value.horainicio)
+        formData.append('horafin', reservacion.value.horafin)
         formData.append('seguro', reservacion.value.seguro)
         formData.append('sillabebe', reservacion.value.sillaBebe)
         formData.append('total', total.value)
@@ -276,6 +302,17 @@
     }
 
     onMounted(async () => {
+        const ahora = new Date()
+        
+        const año = ahora.getFullYear()
+        const mes = String(ahora.getMonth() + 1).padStart(2, "0")
+        const dia = String(ahora.getDate()).padStart(2, "0")
+        Dia.value = `${año}-${mes}-${dia}`
+
+        const horas = String(ahora.getHours()).padStart(2, "0")
+        const minutos = String(ahora.getMinutes()).padStart(2, "0")
+        horaActual.value = `${horas}:${minutos}`
+
         const id = route.params.id
         carDetails.value = await AutoServicePublic.getById(id)
     })

@@ -9,7 +9,7 @@ export const getReservaciones = async (req, res) => {
 export const crearReservacion = async (req, res) => {
     try {
         const usuarioId = req.user.id
-        const { fechainicio, fechafin, total, seguro, sillabebe, autoId } = req.body
+        const { fechainicio, fechafin, horainicio, horafin, total, seguro, sillabebe, autoId } = req.body
 
         if (!fechainicio || !fechafin || !autoId) {
             return res.status(400).json({ message: 'Datos incompletos' })
@@ -21,6 +21,8 @@ export const crearReservacion = async (req, res) => {
             confirmacion: `RES-${Date.now()}`,
             fechainicio: new Date(fechainicio),
             fechafin: new Date(fechafin),
+            horainicio,
+            horafin,
             total: Number(total),
             seguro: seguro === 'true' || seguro === true,
             sillabebe: sillabebe === 'true' || sillabebe === true,
