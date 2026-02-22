@@ -1,17 +1,38 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-[#f4f6f8]">
     <Navbar />
     
-    <div class="container mx-auto px-4 py-8 pt-25">
+  <section class="mx-auto max-w-7xl px-4 py-16 md:py-24">
+
+    <div class="relative overflow-hidden rounded-3xl mb-10">
+      
+      <div class="absolute inset-0 bg-gradient-to-r from-black via-[#111] to-[#ff6b00]"></div>
+      <div class="absolute -right-32 -top-32 w-[420px] h-[420px] bg-[#ff6b00] opacity-20 blur-[120px] rounded-full animate-pulse"></div>
+      <div class="relative px-8 md:px-14 py-12 md:py-16 flex items-center min-h-[180px]">
+
+        <div class="max-w-xl">
+          <h1 class="hero-title text-3xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
+            Explora nuestros
+            <span class="text-[#ff6b00]"> Vehículos</span>
+          </h1>
+          <p class="hero-sub text-gray-300 mt-4 text-lg">
+            Encuentra el auto perfecto para tu viaje
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container mx-auto px-4 py-3">
       <div class="grid md:grid-cols-4 gap-8">
         <!-- Sidebar de filtros -->
         <div class="md:col-span-1">
-          <div class="bg-white p-6 rounded-lg shadow sticky top-4">
-            <h3 class="text-lg font-semibold mb-4">Filtros</h3>
+          <div class="filter-box sticky top-24">
+            <h3 class="text-lg font-bold mb-6">Filtros</h3>
             
-            <div class="mb-6">
-              <label class="block text-sm font-medium mb-2">Tipo de Vehículo</label>
-              <select v-model="filters.tipoVehiculo" class="w-full border border-gray-300 rounded p-2">
+            <div class="input-group mb-6">
+              <label>Tipo de Vehículo</label>
+              <select v-model="filters.tipoVehiculo">
                 <option value="">Todos</option>
                 <option value="Pequeño">Pequeño</option>
                 <option value="Coupe">Coupe</option>
@@ -22,22 +43,22 @@
               </select>
             </div>
 
-            <div class="mb-6">
-              <label class="block text-sm font-medium mb-2">Precio máximo</label>
+            <div class="input-group mb-6">
+              <label>Precio máximo</label>
               <input v-model.number="filters.maximoPrecio" type="range" min="0" max="5000" class="w-full">
-              <div class="text-sm text-gray-600 mt-2">${{ filters.maximoPrecio }}/día</div>
+              <div class="text-sm text-gray-500 mt-2 font-semibold">${{ filters.maximoPrecio }}/día</div>
             </div>
 
-            <div class="mb-6">
-              <label class="block text-sm font-medium mb-2">Transmisión</label>
-              <select v-model="filters.transmision" class="w-full border border-gray-300 rounded p-2">
+            <div class="input-group mb-6">
+              <label>Transmisión</label>
+              <select v-model="filters.transmision">
                 <option value="">Todas</option>
                 <option value="Manual">Manual</option>
                 <option value="Automática">Automática</option>
               </select>
             </div>
 
-            <button @click="clearFilters" class="w-full border border-gray-300 text-gray-700 py-2 rounded hover:bg-gray-50">
+            <button @click="clearFilters" class="btn-clear">
               Limpiar Filtros
             </button>
           </div>
@@ -45,22 +66,25 @@
 
         <!-- Grid de autos -->
         <div class="md:col-span-3">
-          <div class="mb-4 flex justify-between items-center">
-            <p class="text-gray-600">Mostrando {{ filteredCars.length }} autos</p>
-            <select v-model="sortBy" class="border border-gray-300 rounded p-2">
+          <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+            <h2 class="text-2xl font-bold text-gray-800">{{ filteredCars.length }} vehículo disponibles</h2>
+            <div class="input-group">
+              <select v-model="sortBy" class="w-[220px]">
               <option value="price-asc">Precio menor</option>
               <option value="price-desc">Precio mayor</option>
               <option value="rating">Mejor calificación</option>
             </select>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <CarCard v-for="car in filteredCars" :key="car.id" :car="car" 
-                     @click="navigateTo(car.id)" />
+                     @click="navigateTo(car.id)" class="car-card group" />
           </div>
         </div>
       </div>
     </div>
+  </section>
   </div>
 </template>
 
@@ -113,10 +137,115 @@ const filteredCars = computed(() => {
 })
 
 const clearFilters = () => {
-  filters.value = { tipoVehiculo: '', maximoPrecio: 500, transmision: '' }
+  filters.value = { tipoVehiculo: '', maximoPrecio: 5000, transmision: '' }
 }
 
 const navigateTo = (carId) => {
   goCarDetail(carId)
 }
 </script>
+
+<style scoped>
+.filter-box {
+  background: white;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, .08);
+  border:1px solid #f1f1f1;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 13px;
+    color:#6b7280;
+    margin-bottom:6px;
+    font-weight:500;
+}
+
+.input-group input,
+.input-group select {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 12px;
+    background: white;
+    transition: .3s;
+    outline: none;
+    font-weight: 500;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, .15);
+}
+
+.btn-clear {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: #111;
+  color: white;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.btn-clear:hover {
+  background: #ff6b00;
+  transform: translateY(-2px);
+  box-shadow:0 18px 35px rgba(255,107,0,.45);
+}
+
+.btn-clear:active {
+  transform: scale(.96);
+}
+
+.car-card {
+  transition: .4s;
+  animation:fadeUp .6s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+@keyframes glowMove{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-20px)}
+  100%{transform:translateY(0)}
+}
+
+.animate-glow{
+  animation: glowMove 6s ease-in-out infinite;
+}
+
+.hero-title{
+  opacity:0;
+  transform:translateY(40px);
+  animation:titleReveal 1s ease forwards;
+}
+
+.hero-title span{
+  opacity:0;
+  transform:translateY(25px);
+  animation:titleReveal 1s ease forwards;
+  animation-delay:.35s;
+}
+
+.hero-sub{
+  opacity:0;
+  transform:translateY(25px);
+  animation:titleReveal 1s ease forwards;
+  animation-delay:.6s;
+}
+
+@keyframes titleReveal{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+</style>

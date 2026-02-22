@@ -8,6 +8,9 @@ import Success from '../pages/success.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import misReservas from '../pages/misReservas.vue'
+import Contactanos from '../pages/contactanos.vue'
+import Oficinas from '../pages/oficinas.vue'
+import CotizarVehiculo from '../pages/CotizarVehiculo.vue'
 
 const routes = [
     {
@@ -15,6 +18,18 @@ const routes = [
         name: 'home',
         component: Home,
         meta: { title: "AutoRent - Renta de Autos" },
+    },
+    {
+        path: '/contactanos',
+        name: 'contactanos',
+        component: Contactanos,
+        meta: { title: "AutoRent - Contactanos" }
+    },
+    {
+        path: '/oficinas',
+        name: 'oficinas',
+        component: Oficinas,
+        meta: { title: "AutoRent - Oficinas" }
     },
     {
         path: '/login',
@@ -38,13 +53,19 @@ const routes = [
         path: '/cars',
         name: 'Cars',
         component: Cars,
-        meta: { title: "Nuestro Autos - AutoRent", requiresAuth: true },
+        meta: { title: "Nuestro Autos - AutoRent" },
     },
     {
         path: '/car-detail/:id',
         name: 'CarDetail',
         component: CarDetail,
-        meta: { title: "Detalles del Auto - AutoRent", requiresAuth: true },
+        meta: { title: "Detalles del Auto - AutoRent" },
+    },
+    {
+        path: '/cotizar/auto/:id',
+        name: 'CotizarAuto',
+        component: CotizarVehiculo,
+        meta: { title: "Cotizacion Auto - AutoRent" }
     },
     {
         path: '/checkout/:id',
@@ -53,7 +74,7 @@ const routes = [
         meta: { title: "Checkout - AutoRent", requiresAuth: true },
     },
     {
-        path: '/success',
+        path: '/success/:id',
         name: 'Success',
         component: Success,
         meta: { title: "Reserva Confirmada - AutoRent", requiresAuth: true },

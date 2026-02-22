@@ -1,32 +1,36 @@
 <template>
-    <nav class="bg-white shadow fixed top-0 left-0 w-full z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <nav class="bg-[#0f0f0f]/95 backdrop-blur-md shadow-lg fixed top-0 left-0 w-full z-50 border-b border-white/5">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
 
-            <div class="flex items-center gap-6">
-                <button class="md:hidden text-gray-700"
+            <div class="flex items-center gap-8">
+                <button class="md:hidden text-white text-2xl"
                 @click="isOpen = true">
                     ☰
                 </button>
-                <a @click="navigateHome" class="text-2xl font-bold text-blue-600 cursor-pointer">AutoRent</a>
-                <div class="hidden md:flex gap-6">
-                    <a @click="navigateHome" class="text-gray-700 hover:text-blue-600 cursor-pointer">Inicio</a>
-                    <a @click="navigateCars" class="text-gray-700 hover:text-blue-600 cursor-pointer">Autos</a>
-                    <a href="/" class="text-gray-700 hover:text-blue-600 cursor-pointer">Contacto</a>   
+                <a @click="navigateHome" class="text-2xl font-bold text-white tracking-wide cursor-pointer hover:text-[#ff6b00] transition duration-300">
+                    Auto<span class="text-[#ff6b00]">Rent</span>
+                </a>
+                <div class="hidden md:flex gap-8 font-medium">
+                    <a @click="navigateHome" class="nav-link">Inicio</a>
+                    <a @click="navigateCars" class="nav-link">Autos</a>
+                    <a @click="navigateContactanos" class="nav-link">Contactanos</a>   
+                    <a @click="navigateOficinas" class="nav-link">Oficinas</a>
                 </div>
             </div>
 
             <div class="hidden md:flex items-center gap-4">
-                <button v-if="!isAutenticado" @click="navigateLogin" class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-100 transition">
+                <button v-if="!isAutenticado" @click="navigateLogin" class="px-5 py-2 rounded-xl font-semibold border border-[#ff6b00] text-[#ff6b00] 
+                hover:bg-[#ff6b00] hover:text-white transition duration-300 shadow hover:shadow-orange-500/30">
                     Inicia sesión
                 </button>
                 <template v-else>
                     <button @click="navigateReservas"
-                        class="text-gray-700 hover:text-blue-600 font-medium">
+                        class="text-gray-300 hover:text-[#ff6b00] font-medium transition">
                         Mis reservas
                     </button>
 
                     <button @click="logout"
-                        class="text-red-600 hover:text-red-700 font-medium">
+                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
                         Cerrar sesión
                     </button>
                 </template>
@@ -35,36 +39,37 @@
 
         <div
         v-if="isOpen"
-        class="fixed inset-0 bg-black/40"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm"
         @click="isOpen = false">
 
         </div>
 
-        <aside class="fixed top-0 left-0 h-full w-72 bg-white shadow-lg z-50 transform transition-transform duration-300" :class="isOpen ? 'translate-x-0' : '-translate-x-full'">
-            <div class="p-6 flex justify-between items-center">
-                <span class="text-xl font-bold text-blue-600">AutoRent</span>
+        <aside class="fixed top-0 left-0 h-full w-72 bg-[#0f0f0f]/95 border-r border-white/10 shadow-lg z-50 transform transition-transform duration-300" :class="isOpen ? 'translate-x-0' : '-translate-x-full'">
+            <div class="p-6 flex justify-between items-center border-b border-white/10 bg-[#0f0f0f]/95">
+                <span class="text-xl font-bold text-white">Auto<span class="text-[#ff6b00]">Rent</span></span>
                 <button @click="isOpen = false"  class="bg-red-600 text-white w-8 h-8 rounded-full">✕</button>
             </div>
 
-            <nav class="p-6 flex flex-col gap-4">
-                <a @click="navigateHome" class="text-gray-700 hover:text-blue-600 cursor-pointer">Inicio</a>
-                <a @click="navigateCars" class="text-gray-700 hover:text-blue-600 cursor-pointer">Autos</a>
-                <a href="/" class="text-gray-700 hover:text-blue-600 cursor-pointer">Contacto</a>
+            <nav class="p-6 flex flex-col gap-5 font-medium bg-[#0f0f0f]/95">
+                <a @click="navigateHome" class="mobile-link">Inicio</a>
+                <a @click="navigateCars" class="mobile-link">Autos</a>
+                <a @click="navigateContactanos" class="mobile-link">Contactanos</a>
+                <a @click="navigateOficinas" class="mobile-link">Oficinas</a>
                 
-                <hr>
+                <hr class="border-white/10 bg-[#0f0f0f]/95">
 
-                <button v-if="!isAutenticado" @click="navigateLogin" class="w-full border border-blue-600 text-blue-600 py-2 rounded-lg font-semibold">
+                <button v-if="!isAutenticado" @click="navigateLogin" class="bg-[#ff6b00] hover:bg-[#ff8533] text-white py-3 rounded-xl font-semibold transition shadow-lg">
                     Iniciar sesión
                 </button>
 
                 <template v-else>
                     <button @click="navigateReservas"
-                        class="w-full text-left text-gray-700 font-medium">
+                        class="mobile-link">
                         Mis reservas
                     </button>
 
                     <button @click="logout"
-                        class="w-full text-left text-red-600 font-medium">
+                        class="text-left text-red-600 font-medium">
                         Cerrar sesión
                     </button>
                 </template>
@@ -77,7 +82,7 @@
     import { useNavigation } from '../composables/useNavigation';
     import { useAuthStore } from '../store/auth.store';
 
-    const { goHome, goCars, goLogin, goMisReservas } = useNavigation()
+    const { goHome, goCars, goContactanos, goOficinas, goLogin, goMisReservas } = useNavigation()
     const isOpen = ref(false)
     const auth = useAuthStore()
 
@@ -85,6 +90,8 @@
     const navigateCars = () => goCars()
     const navigateLogin = () => goLogin()
     const navigateReservas = () => goMisReservas()
+    const navigateContactanos = () => goContactanos()
+    const navigateOficinas = () => goOficinas()
 
     const isAutenticado = computed(() => !!auth.token)
 
@@ -93,3 +100,39 @@
         goHome();
     }
 </script>
+
+<style scoped>
+.nav-link {
+    color: #d1d5db;
+    position: relative;
+    cursor: pointer;
+    transition: .3s;
+}
+.nav-link:hover {
+    color: #ff6b00;
+}
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #ff6b00;
+    transition: .3s;
+}
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.mobile-link {
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: -3s;
+}
+
+.mobile-link:hover {
+    color: #ff6b00;
+    transform: translateX(6px);
+}
+</style>

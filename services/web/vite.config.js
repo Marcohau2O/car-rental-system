@@ -5,6 +5,13 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [vue(), tailwindcss(),],
+  theme:{
+    extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif']
+      }
+    }
+  },
   resolve: {
     alias: {
         '@': path.resolve(__dirname, 'src')

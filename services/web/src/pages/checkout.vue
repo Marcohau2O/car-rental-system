@@ -1,45 +1,50 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-[#f6f7fb] overflow-hidden">
         <Navbar/>
 
-        <div class="container mx-auto px-4 py-8 pt-25">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="md:col-span-2">
-                    <div class="bg-white p-6 rounded-lg shadow mb-6">
-                        <h2 class="text-2xl font-bold mb-6">Detalles de la Reserva</h2>
+        <div class="fixed top-[-120px] right-[-120px] w-[420px] h-[420px] bg-[#ff6b00] opacity-20 blur-[130px] rounded-full animate-glow"></div>
+        <div class="fixed bottom-[-120px] left-[-120px] w-[420px] h-[420px] bg-[#ff6b00] opacity-10 blur-[130px] rounded-full animate-glow"></div>
 
-                        <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-4">Fechas</h3>
+        <div class="max-w-7xl mx-auto px-4 py-10 pt-28 relative">
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="md:col-span-2 space-y-6">
+                    <div class="card-box">
+                        <h2 class="text-3xl font-extrabold mb-6 hero-title">
+                            Detalles de <span class="text-[#ff6b00]">Reserva</span>
+                        </h2>
+
+                        <div class="mb-8">
+                            <h3 class="section-title">Fechas</h3>
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Fecha de recogida</label>
-                                    <input v-model="reservacion.fechainicio" type="date" :min="Dia" class="w-full border border-gray-300 rounded p-2">
+                                    <label class="label">Fecha de recogida</label>
+                                    <input v-model="reservacion.fechainicio" type="date" :min="Dia" class="input">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Hora recogida</label>
-                                    <input v-model="reservacion.horainicio" type="time" :min="reservacion.fechainicio === Dia ? horaActual : '08:00'" max="20:00" class="w-full border border-gray-300 rounded p-2">
+                                    <label class="label">Hora recogida</label>
+                                    <input v-model="reservacion.horainicio" type="time" :min="reservacion.fechainicio === Dia ? horaActual : '08:00'" max="20:00" class="input">
                                 </div>
                             </div>
-                            <div class="grid md:grid-cols-2 gap-4 p-1">
+                            <div class="grid md:grid-cols-2 gap-4 mt-3">
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Fecha de retorno</label>
-                                    <input v-model="reservacion.fechafin" :min="reservacion.fechainicio || Dia" type="date" class="w-full border border-gray-300 rounded p-2">
+                                    <label class="label">Fecha de retorno</label>
+                                    <input v-model="reservacion.fechafin" :min="reservacion.fechainicio || Dia" type="date" class="input">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Hora fin</label>
-                                    <input type="time" min="08:00" max="20:00" class="w-full border border-gray-300 rounded p-2">
+                                    <label class="label">Hora fin</label>
+                                    <input v-model="reservacion.horafin" type="time" min="08:00" max="20:00" class="input">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-6 border-t pt-6">
-                            <h3 class="text-lg font-semibold mb-4">Ubicacion y Licencia/Carnet de Conducir</h3>
+                        <div class="mb-8 border-t pt-6">
+                            <h3 class="section-title">Ubicacion y Licencia/Carnet de Conducir</h3>
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div>
-                                     <label class="block text-sm font-medium mb-2">
+                                     <label class="label">
                                     Lugar de Retiro
                                     </label>
-                                    <select v-model="reservacion.lugarRetiro" class="w-full border border-gray-300 rounded p-2 bg-white input">
+                                    <select v-model="reservacion.lugarRetiro" class="input">
                                         <option disabled value="">Selecciona un lugar</option>
                                         <option v-for="loc in locaciones" :key="loc.value" :value="loc.value">
                                             {{ loc.label }}
@@ -47,10 +52,10 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">
+                                    <label class="label">
                                     Lugar de Devolución
                                     </label>
-                                    <select v-model="reservacion.lugarDevolucion" class="w-full border border-gray-300 rounded p-2 bg-white input">
+                                    <select v-model="reservacion.lugarDevolucion" class="input">
                                         <option disabled value="">Selecciona un lugar</option>
                                         <option v-for="loc in locaciones" :key="loc.value" :value="loc.value">
                                             {{ loc.label }}
@@ -59,36 +64,34 @@
                                 </div>
                                 
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium mb-2">
+                                    <label class="label">
                                         Licencia/Carner de Conducir
                                     </label>
-                                    <input type="file" accept="image/png, image/jpeg" :disabled="isSubmitting" @change="handleLicenciaChange" placeholder="Licencia de conducir" class="border border-gray-300 rounded p-2 col-span-2">
+                                    <div class="upload-box">
+                                        <input type="file" accept="image/png, image/jpeg" :disabled="isSubmitting" @change="handleLicenciaChange">
+                                        <span>Subir imagen</span>
+                                    </div>
                                     <p v-if="licenciaError" class="text-red-600 text-sm mt-2">
                                         {{ licenciaError }}
                                     </p>
 
-                                    <div v-if="licenciaPreview" class="mt-4">
-                                        <p class="text-sm txet-gray-600 mb-2">Vista precia:</p>
-                                        <img :src="licenciaPreview" class="w-full h-40 object-cover rounded-lg" alt="Licencia">
-                                    </div>
+                                    <img v-if="licenciaPreview"
+                                    :src="licenciaPreview"
+                                    class="w-full h-44 object-cover rounded-xl mt-4 shadow">
                                 </div>
                             </div>
                         </div>
 
                         <div class="border-t pt-6">
-                            <h3 class="text-lg font-semibold mb-4">Servicios Adicionales</h3>
-                            <div class="space-y-2">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                <input v-model="reservacion.seguro" type="checkbox" class="w-4 h-4">
-                                <span>Seguro completo (+$500/día)</span>
+                            <h3 class="section-title">Servicios Adicionales</h3>
+                            <div class="space-y-3 mt-3">
+                                <label class="check-row">
+                                    <input v-model="reservacion.seguro" type="checkbox">
+                                    Seguro completo (+$500/día)
                                 </label>
-                                <!-- <label class="flex items-center gap-2 cursor-pointer">
-                                <input v-model="reservation.gpsPack" type="checkbox" class="w-4 h-4">
-                                <span>GPS y Paquet wifi (+$8/día)</span>
-                                </label> -->
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                <input v-model="reservacion.sillaBebe" type="checkbox" class="w-4 h-4">
-                                <span>Kit para bebé (+$450)</span>
+                                <label class="check-row">
+                                    <input v-model="reservacion.sillaBebe" type="checkbox">
+                                    Kit para bebé (+$450)
                                 </label>
                             </div>
                         </div>
@@ -96,47 +99,45 @@
                 </div>
 
                 <div class="md:col-span-1">
-                    <div v-if="carDetails" class="bg-white p-6 rounded-lg shadow sticky top-4">
-                        <h3 class="text-2xl font-bold mb-4">Resumen</h3>
+                    <div v-if="carDetails" class="card-box sticky top-24 animate-fadeUp">
+                        <h3 class="text-2xl font-extrabold mb-5">Resumen de pago</h3>
 
-                        <div class="mb-4 pb-4 border-b">
-                            <img :src="`${API_PUBLIC_URL}${carDetails.imagen}`" alt="Auto" class="w-full object-cover rounded mb-2">
-                            <p class="font-semibold">{{ carDetails.marca }} {{ carDetails.modelo }}</p>
-                            <p class="text-sm text-gray-600">{{ carDetails.tipoVehiculo }}</p>
-                        </div>
+                        <img :src="`${API_PUBLIC_URL}${carDetails.imagen}`" alt="Auto" class="w-full h-44 object-cover rounded-xl mb-3">
+                        <p class="font-bold text-lg">{{ carDetails.marca }} {{ carDetails.modelo }}</p>
+                        <p class="text-sm text-gray-500 mb-4">{{ carDetails.tipoVehiculo }}</p>
 
-                        <div class="space-y-2 text-sm mb-3 pb-4 border-b">
-                            <div class="flex justify-between">
+                        <div class="space-y-2 text-sm border-y py-4 mb-4">
+                            <div class="row">
                                 <span>Precio diario:</span>
                                 <span>${{ carDetails.precioPorDia }}</span>
                             </div>
-                            <div class="flex justify-between">
+                            <div class="row">
                                 <span>Dias:</span>
                                 <span>{{ daysCount }}</span>
                             </div>
-                            <div class="flex justify-between font-semibold text-base">
+                            <div class="row font-semibold">
                                 <span>Subtotal:</span>
                                 <span>${{ subtotal }}</span>
                             </div>
                         </div>
 
-                        <div class="space-y-2 text-sm mb-4 pb-4 border-b">
-                            <div class="flex justify-between">
+                        <div class="space-y-2 text-sm mb-4">
+                            <div class="row">
                                 <span>Seguro:</span>
                                 <span>${{ costoSeguro }}</span>
                             </div>
-                            <div class="flex justify-between">
+                            <div class="row">
                                 <span>Adicionales:</span>
                                 <span>${{ additionalsCost }}</span>
                             </div>
                         </div>
 
-                        <div class="flex justify-between font-bold text-lg mb-4">
+                        <div class="flex justify-between font-bold text-xl mb-5">
                             <span>Total:</span>
-                            <span>${{ total }}</span>
+                            <span class="text-[#ff6b00]">${{ total }}</span>
                         </div>
 
-                        <button type="button" @click="goToPayment" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        <button type="button" @click="goToPayment" class="w-full btn-pay">
                             <span v-if="isSubmitting">
                                 Cargando pago...
                             </span>
@@ -291,8 +292,10 @@
         formData.append('licencia', licenciaFile.value)
 
         try {
-            await ReservacionService.crearReserva(formData)
-            goSuccess()
+            const res = await ReservacionService.crearReserva(formData)
+            console.log("Id", res)
+            goSuccess(res.id)
+            console.log("Id-reservas", res.id)
         } catch (error) {
             console.error(error)
             alert('Error al guardar la reservación')
@@ -315,5 +318,132 @@
 
         const id = route.params.id
         carDetails.value = await AutoServicePublic.getById(id)
+
+        if (route.query.fechainicio) {
+            reservacion.value.fechainicio = route.query.fechainicio
+            reservacion.value.fechafin = route.query.fechafin
+            reservacion.value.seguro = route.query.seguro === 'true'
+            reservacion.value.sillaBebe = route.query.sillaBebe === 'true'
+        }
     })
 </script>
+
+<style scoped>
+.card-box {
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 25px 60px rgba(0,0,0,.08);
+  border:1px solid #f1f1f1;
+  transition:.4s;
+}
+.card-box:hover {
+  transform:translateY(-6px);
+  box-shadow:0 30px 70px rgba(0,0,0,.12);
+}
+
+.section-title {
+  font-weight:700;
+  margin-bottom:12px;
+  font-size:18px;
+}
+
+.label {
+  display:block;
+  font-size:13px;
+  margin-bottom:6px;
+  font-weight:600;
+  color:#444;
+}
+
+.input {
+  width:100%;
+  border:1px solid #e5e7eb;
+  padding:12px 14px;
+  border-radius:12px;
+  background:white;
+  transition:.3s;
+}
+
+.input:focus {
+  outline:none;
+  border-color:#ff6b00;
+  box-shadow:0 0 0 3px rgba(255,107,0,.15);
+}
+
+.upload-box {
+  border:2px dashed #ddd;
+  padding:20px;
+  border-radius:14px;
+  text-align:center;
+  cursor:pointer;
+  transition:.3s;
+  background:#fafafa;
+}
+.upload-box:hover {
+  border-color:#ff6b00;
+  background:#fff7f0;
+}
+
+.check-row {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#f9fafb;
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:.3s;
+}
+.check-row:hover {
+  background:#fff3ea;
+}
+
+.row {
+  display:flex;
+  justify-content:space-between;
+}
+
+.btn-pay {
+  background:#ff6b00;
+  color:white;
+  padding:16px;
+  border-radius:14px;
+  font-weight:700;
+  transition:.35s;
+  box-shadow:0 15px 40px rgba(255,107,0,.35);
+}
+.btn-pay:hover {
+  background:#ff8533;
+  transform:translateY(-3px);
+  box-shadow:0 25px 60px rgba(255,107,0,.45);
+}
+
+.hero-title {
+  opacity:0;
+  transform:translateY(40px);
+  animation:titleReveal 1s ease forwards;
+}
+
+@keyframes titleReveal {
+  to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes glowMove {
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-25px)}
+  100%{transform:translateY(0)}
+}
+.animate-glow {
+  animation:glowMove 7s ease-in-out infinite;
+}
+
+.animate-fadeUp {
+  animation:fadeUp .8s ease;
+}
+@keyframes fadeUp {
+  from{opacity:0; transform:translateY(30px)}
+  to{opacity:1; transform:translateY(0)}
+}
+</style>

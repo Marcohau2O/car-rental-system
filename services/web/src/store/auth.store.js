@@ -3,7 +3,6 @@ import { loginRequestP, registerRequestP, logout } from "../services/auth.servic
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        user: JSON.parse(sessionStorage.getItem("user")) || null,
         token: sessionStorage.getItem("token"),
         loading: false,
         error: null,
