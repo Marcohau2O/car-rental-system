@@ -13,6 +13,7 @@ export function useNavigation() {
             id ? `/admin/cars-form/${id}` : "/admin/cars-form"
         )
     }
+    const goAdminCarsFormNew = () => router.push("/admin/cars-form")
     const goAdminUserForm = (id) => {
         router.push(
             id ? `/admin/user-form/${id}` : "/admin/user-form"
@@ -23,12 +24,12 @@ export function useNavigation() {
     const goAdminReservationsDetail = (id) => router.push(`/admin/reservations/${id}`)
     const goAdminCalendario = () => router.push("/admin/calendario")
 
-
     return {
         goAdminLogin,
         goAdminDashboard,
         goAdminCars,
         goAdminCarsForm,
+        goAdminCarsFormNew,
         goAdminUserForm,
         goAdminReservations,
         goAdminUsers,
