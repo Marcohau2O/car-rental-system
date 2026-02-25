@@ -91,12 +91,11 @@
     onMounted(async () => {
         try {
             const id = route.params.id
-            console.log ("id", id)
+
             const data = await ReservacionService.getById(id)
 
             reserva.value = data[0]
 
-            console.log("datos reservacion", data)
         } catch(e) {
             console.log(e)
         }

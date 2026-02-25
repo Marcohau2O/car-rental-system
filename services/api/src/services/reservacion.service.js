@@ -25,7 +25,8 @@ export const ReservacionService = {
     getReservacionesByUser: (usuarioId) => prisma.reservacion.findMany({
         where: { usuarioId},
          include: {
-            auto: true
+            auto: true,
+            pago: true,
          },
          orderBy: {
             fechaCreacion: 'desc'
@@ -36,6 +37,7 @@ export const ReservacionService = {
         include: {
             usuario: true,
             auto: true,
+            pago: true,
         }
     }),
     updateEstadoReservacion: (id, estado) => prisma.reservacion.update({
@@ -46,4 +48,6 @@ export const ReservacionService = {
     createReservacion: (data) => prisma.reservacion.create({ data }),
     // updateReservacion: (id, data) => prisma.reservacion.update({ where: { id }, data }),
     // delete: (id) => prisma.reservacion.delete({ where: { id } })
+
+    pagoReservacion: (data) => prisma.pago.create({ data })
 }

@@ -8,6 +8,9 @@
         <div class="max-w-7xl mx-auto px-4 py-10 pt-28 relative">
             <div class="grid md:grid-cols-3 gap-10">
                 <div class="md:col-span-2 space-y-6">
+
+                    <CheckoutPago v-if="mostrarCheckout" :total="total" :reservacion-id="reservacionId" @volver="mostrarCheckout = false" @procesar="procesarPago" />
+
                     <div class="card-box">
                         <h2 class="text-3xl font-extrabold mb-6 hero-title">
                             Detalles de <span class="text-[#ff6b00]">Reserva</span>
@@ -130,6 +133,10 @@
                                 <span>Adicionales:</span>
                                 <span>${{ additionalsCost }}</span>
                             </div>
+                            <div class="row">
+                                <span>Entrega / Devolución:</span>
+                                <span>${{ costoUbicacion }}</span>
+                            </div>
                         </div>
 
                         <div class="flex justify-between font-bold text-xl mb-5">
@@ -137,7 +144,7 @@
                             <span class="text-[#ff6b00]">${{ total }}</span>
                         </div>
 
-                        <button type="button" @click="goToPayment" class="w-full btn-pay">
+                        <button type="button" v-if="!mostrarCheckout" @click="goToPayment" class="w-full btn-pay">
                             <span v-if="isSubmitting">
                                 Cargando pago...
                             </span>
@@ -163,6 +170,8 @@
     import { AutoServicePublic } from '../services/autoP.service';
     import { API_PUBLIC_URL } from '../config/endpointPublic';
     import { ReservacionService } from '../services/reservacion.service';
+    import CheckoutPago from '../components/CheckoutPago.vue';
+    import { PagoService } from '../services/pago.service';
 
     const { goSuccess } = useNavigation()
 
@@ -174,6 +183,8 @@
     const isSubmitting = ref(false)
     const Dia = ref("")
     const horaActual = ref("")
+    const reservacionId = ref(null)
+    const mostrarCheckout = ref(false)
 
     const MAX_SIZE_MB = 2
     const ALLOWED_TYPES = ['image/jpeg', 'image/png']
@@ -222,6 +233,19 @@
         licenciaFile.value = null
         licenciaPreview.value = null
     }
+
+    const costoUbicacion = computed(() => {
+        const retiro = reservacion.value.lugarRetiro
+        const devolucion = reservacion.value.lugarDevolucion
+
+        if (!retiro || !devolucion) return 0
+
+        if (retiro === 'Oficinas' && devolucion === 'Oficinas') {
+            return 0
+        }
+
+        return 150
+    })
  
     const daysCount = computed(() => {
         if (!reservacion.value.fechainicio || !reservacion.value.fechafin) return 0
@@ -251,7 +275,7 @@
     })
 
     const total = computed(() => {
-        return subtotal.value + costoSeguro.value + additionalsCost.value
+        return subtotal.value + costoSeguro.value + additionalsCost.value + costoUbicacion.value
     })
 
     const validarHoras = (hora) => {
@@ -293,14 +317,38 @@
 
         try {
             const res = await ReservacionService.crearReserva(formData)
-            console.log("Id", res)
-            goSuccess(res.id)
-            console.log("Id-reservas", res.id)
+            reservacionId.value = res.id
+            mostrarCheckout.value = true
+
+            alert("Reservacion creada. proceder al pago")
         } catch (error) {
             console.error(error)
             alert('Error al guardar la reservación')
         } finally {
             isSubmitting.value = false
+        }
+    }
+
+    const procesarPago = async ({ metodo, tipoPago, monto }) => {
+        try {
+
+            if (!reservacionId.value) {
+                alert("Primero crea la reservacion")
+                return
+            }
+            
+            await PagoService.pagar({
+                reservacionId: reservacionId.value,
+                metodo,
+                tipoPago,
+                monto
+            })
+
+            alert("Pago registrado correctamente")
+
+            goSuccess(reservacionId.value)
+        } catch (error) {
+            alert("Error al procesar pago")
         }
     }
 

@@ -71,6 +71,13 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="grid md:grid-cols-2 gap-3 text-sm">
+                            <div class="info-row">
+                                {{ reserva.pago.estado }}
+                                →
+                                {{ reserva.pago.metodo }}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="flex flex-col justify-between text-right">
@@ -85,9 +92,9 @@
                             </p>
                         </div>
 
-                        <button class="btn-details mt-3">
+                        <!-- <button class="btn-details mt-3">
                             ver Detalles
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -124,7 +131,7 @@
     onMounted(async () => {
         try {
             reservas.value = await ReservacionService.getById()
-            console.log(reservas.value)
+
         } catch (error) {
             console.error(error)
             alert('Error al cargar las reservaciones')
