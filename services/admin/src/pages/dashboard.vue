@@ -43,8 +43,9 @@
             <div class="bg-white p-6 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-4">Acciones Rápidas</h3>
                 <div class="space-y-2">
-                        <button v-if="hasRole([1])" @click="goAdminCarsForm" class="block bg-blue-600 text-white p-2 rounded text-center hover:bg-blue-700">
-                            Añadir Nuevo Auto
+                        <button v-if="hasRole([1])" @click="goAdminCarsFormNew()" 
+                         class="block bg-blue-600 text-white p-2 rounded text-center hover:bg-blue-700">
+                         Añadir Nuevo Auto
                         </button>
                         <button @click="goAdminReservations" class="block bg-green-600 text-white p-2 rounded text-center hover:bg-green-700">
                             Ver Reservas
@@ -66,7 +67,7 @@
                         </thead>
                         <tbody>
                             <tr v-if="loading">
-                                <td colspan="5", class="py-10">
+                                <td colspan="5" class="py-10">
                                     <Spinner />
                                 </td>
                             </tr>
@@ -96,7 +97,7 @@
     import { getUser } from '../utils/auth';
     import Spinner from '../components/Spinner.vue';
 
-    const { goAdminCarsForm, goAdminReservations } = useNavigation()
+    const { goAdminCarsForm, goAdminCarsFormNew, goAdminReservations } = useNavigation()
 
     const loading = ref(true)
 
@@ -138,5 +139,4 @@
     }
         return colors[status] || 'bg-gray-100 text-gray-800'
     }
-
 </script>
