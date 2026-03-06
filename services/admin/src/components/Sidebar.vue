@@ -1,7 +1,7 @@
 <template>
     <aside class="w-64 h-full flex flex-col">
         <div class="p-6 border-b border-gray-800 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">RentaCar</h1>
+            <h1 class="text-2xl font-bold">Riviera Rentals</h1>
 
             <button
                 class="md:hidden text-xl"

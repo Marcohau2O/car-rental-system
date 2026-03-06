@@ -28,7 +28,7 @@
                     </div>
                     <div class="input-group">
                         <label>Telefono:</label>
-                        <input v-model="form.telefono" type="texy" placeholder="9982418792" class="w-full bg-white/10 text-white" required>
+                        <input v-model="form.telefono" type="text" placeholder="9982418792" class="w-full bg-white/10 text-white" required>
                     </div>
                     <button type="submit" class="btn-button w-full">
                         Registrate
@@ -47,6 +47,8 @@
     import { reactive } from 'vue';
     import { useNavigation } from '../composables/useNavigation';
     import { useAuthStore } from '../store/auth.store';
+    import { alertError, alertLoading, alertSuccess } from '../utils/alerts';
+    import Swal from 'sweetalert2';
     
     const { goLogin } = useNavigation()
     const auth = useAuthStore()
@@ -60,14 +62,24 @@
 
     const handleRegister = async () => {
         if (!form.nombre || !form.correo || !form.password || !form.telefono) {
-            alert("Los campos son obligatorios")
+            alertError("Los campos son obligatorios")
+            return
         }
 
         try {
+            alertLoading("Creando cuenta...")
             await auth.registerStore(form)
-            goLogin()
+            Swal.close()
+
+            alertSuccess("Cuenta creada correctamente")
+
+            setTimeout(() => {
+                goLogin()
+            }, 1200)
         } catch (e) {
-            alert(e.response?.data?.message || 'Error al registrarse')
+            console.log(e)
+            Swal.close()
+            alertError(e.resp.onse?.data?.message || 'Error al registrarse')
         }
     }
 

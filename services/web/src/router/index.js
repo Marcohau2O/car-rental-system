@@ -11,6 +11,7 @@ import misReservas from '../pages/misReservas.vue'
 import Contactanos from '../pages/contactanos.vue'
 import Oficinas from '../pages/oficinas.vue'
 import CotizarVehiculo from '../pages/CotizarVehiculo.vue'
+import DatosContrato from '../pages/DatosContrato.vue'
 
 const routes = [
     {
@@ -72,6 +73,12 @@ const routes = [
         name: 'Checkout',
         component: Checkout,
         meta: { title: "Checkout - AutoRent", requiresAuth: true },
+    },
+    {
+        path: '/contrato/:id',
+        name: 'Contrato',
+        component: DatosContrato,
+        meta: { title: "Contrato - Riviera Rentals"}
     },
     {
         path: '/success/:id',

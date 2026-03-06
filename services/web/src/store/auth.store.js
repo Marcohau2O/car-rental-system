@@ -15,8 +15,8 @@ export const useAuthStore = defineStore("auth", {
                 this.error = null;
 
                 const data = await loginRequestP(credenciales);
-                this.user = data.user;
                 this.token = data.token;
+                return data
             } catch (error) {
                 this.error = error.response?.data?.message || "Error al iniciar session";
                 throw error;

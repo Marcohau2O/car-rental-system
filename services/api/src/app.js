@@ -9,6 +9,7 @@ import healthRoutes from "./routes/health.routes.js"
 import reservacionRoutes from "./routes/reservacion.routes.js"
 import dashboardRoutes from "./routes/dashboard.routes.js"
 import pagoRoutes from "./routes/pago.routes.js"
+import pdfRoutes from "./routes/pdf.routes.js"
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/usuario", userRoutes);
 app.use("/api/reservacion", reservacionRoutes)
 app.use("/api/dashboard", dashboardRoutes)
 app.use("/api/pago", pagoRoutes)
+app.use("/api/pdf", pdfRoutes)
 app.use('/api/uploads', express.static('uploads'))
 
 app.use((req, res) => {
@@ -31,5 +33,8 @@ app.use((req, res) => {
     message: "Endpoint no encontrado",
   });
 });
+
+import { erroHandler } from "./middlewares/error.middleware.js";
+app.use(erroHandler);
 
 export default app;

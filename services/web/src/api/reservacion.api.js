@@ -5,3 +5,8 @@ export const getReservacionById = () =>
 
 export const crearReservacion = (payload) =>
     api.post("/reservacion", payload);
+
+export const downloadReserva = (id) =>
+    api.get(`/pdf/${id}`, {
+        responseType: "blob"
+    })

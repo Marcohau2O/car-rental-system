@@ -11,7 +11,7 @@
                 <div v-else>
                     <p class="text-gray-600 text-sm">Total de Autos</p>
                     <p class="text-3xl font-bold text-gray-900">{{ stats.totalCaros }}</p>
-                    <p class="text-green-600 text-sm mt-2">+5 este mes</p>
+                    <!-- <p class="text-green-600 text-sm mt-2">+5 este mes</p> -->
                 </div>
             </div>
             <div v-if="hasRole([1,3])" class="bg-white p-6 rounded-lg shadow">
@@ -19,7 +19,7 @@
                 <div v-else>
                     <p class="text-gray-600 text-sm">Reservas Activas</p>
                     <p class="text-3xl font-bold text-gray-900">{{ stats.reservasActivas }}</p>
-                    <p class="text-green-600 text-sm mt-2">+12 esta semana</p>
+                    <!-- <p class="text-green-600 text-sm mt-2">+12 esta semana</p> -->
                 </div>
             </div>
             <div v-if="hasRole([1])" class="bg-white p-6 rounded-lg shadow">
@@ -27,7 +27,7 @@
                 <div v-else>
                     <p class="text-gray-600 text-sm">Ingresos Totales</p>
                     <p class="text-3xl font-bold text-gray-900">${{ stats.totalIngresos }}</p>
-                    <p class="text-green-600 text-sm mt-2">+8.5% vs mes anterior</p>
+                    <!-- <p class="text-green-600 text-sm mt-2">+8.5% vs mes anterior</p> -->
                 </div>
             </div>
             <div v-if="hasRole([1])" class="bg-white p-6 rounded-lg shadow">
@@ -35,7 +35,7 @@
                 <div v-else>
                     <p class="text-gray-600 text-sm">Usuarios Registrados</p>
                     <p class="text-3xl font-bold text-gray-900">{{ stats.totalUsuarios }}</p>
-                    <p class="text-green-600 text-sm mt-2">+22 nuevos usuarios</p>
+                    <!-- <p class="text-green-600 text-sm mt-2">+22 nuevos usuarios</p> -->
                 </div>
             </div>
         </div>

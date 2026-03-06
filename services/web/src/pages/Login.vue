@@ -40,6 +40,8 @@
     import { useNavigation } from '../composables/useNavigation';
     import { useRoute, useRouter } from 'vue-router';
     import { useAuthStore } from '../store/auth.store';
+    import { alertError, alertSuccess, alertLoading, toastSuccess } from '../utils/alerts';
+    import Swal from 'sweetalert2';
 
     const auth = useAuthStore();
     const route = useRoute()
@@ -51,22 +53,30 @@
     })
 
     
-    const { goRegistro } = useNavigation()
+    const { goRegistro, goHome } = useNavigation()
 
     const handleLogin = async () => {
         if (!form.correo || !form.password) {
-            alert("Correo y Contraseña son oblihatorios");
-            return;
+            alertError("Correo y contraseña son obligatorios")
+            return
         }
 
         try {
-            await auth.loginStore(form);
-                const redirect = route.query.redirect || '/'
-                router.push(redirect)
+            alertLoading("Iniciando sesión...")
+            await auth.loginStore(form)
 
+            Swal.close()
+
+            toastSuccess("Bienvenido a Riviera Rentals")
+            
+            setTimeout(() => {
+                goHome()
+            }, 1200)
+            
         } catch (e) {
             console.log(e)
-            alert(e.response?.data?.message || "Error al iniciar sesión")
+            Swal.close()
+            alertError(e.response?.data?.message || "Error al iniciar sesión")
         }
     }
 

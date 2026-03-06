@@ -1,4 +1,4 @@
-import { getReservacionById, crearReservacion } from "../api/reservacion.api";
+import { getReservacionById, crearReservacion, downloadReserva } from "../api/reservacion.api";
 
 export const ReservacionService = {
     getById: async () => {
@@ -10,4 +10,8 @@ export const ReservacionService = {
         const { data } = await crearReservacion(reserva);
         return data;
     },
+
+    ReservaPDF: async (id) => {
+        return await downloadReserva(id);
+    }
 }

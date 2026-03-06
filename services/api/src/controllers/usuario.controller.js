@@ -1,12 +1,13 @@
 import { UsuarioService } from "../services/usuario.service.js";
 import { logAction } from "../utils/logAction.js";
+import { asyncHandler } from "../middlewares/asyncHandler.js";
 
-export const getUsuarios = async (req, res) => {
+export const getUsuarios = asyncHandler(async (req, res) => {
   const usuarios = await UsuarioService.getAll();
   res.json(usuarios);
-};
+});
 
-export const getUsuario = async (req, res) => {
+export const getUsuario = asyncHandler(async (req, res) => {
   const id = Number(req.params.id);
 
   if(!id) {
@@ -22,9 +23,9 @@ export const getUsuario = async (req, res) => {
   }
 
   res.json(user);
-};
+});
 
-export const createUsuario = async (req, res) => {
+export const createUsuario = asyncHandler(async (req, res) => {
   const usuario = await UsuarioService.create(req.body);
 
   await logAction({
@@ -34,9 +35,9 @@ export const createUsuario = async (req, res) => {
   });
 
   res.status(201).json(usuario);
-};
+});
 
-export const updateUsuario = async (req, res) => {
+export const updateUsuario = asyncHandler(async (req, res) => {
   const usuario = await UsuarioService.update(+req.params.id, req.body);
 
   await logAction({
@@ -46,9 +47,9 @@ export const updateUsuario = async (req, res) => {
   });
 
   res.json(usuario);
-};
+});
 
-export const deleteUsuario = async (req, res) => {
+export const deleteUsuario = asyncHandler(async (req, res) => {
   await UsuarioService.delete(+req.params.id);
 
   await logAction({
@@ -58,7 +59,7 @@ export const deleteUsuario = async (req, res) => {
   });
 
   res.json({ message: "Usuario eliminado" });
-};
+});
 
 // export const assignRole = async (req, res) => {
 //   const usuario = await UsuarioService.assignRole(

@@ -101,8 +101,31 @@
         }
     })
 
-    const downloadPDF = () => {
-        window.open(`/api/reservas/pdf/${reserva.value.id}`, '_blank')
+    const downloadPDF = async () => {
+        try {
+
+            const response = await ReservacionService.ReservaPDF(reserva.value.id)
+
+            console.log(response)
+            console.log(response.data)
+
+            const blob = new Blob([response.data], { type: "application/pdf" })
+            
+            const url = window.URL.createObjectURL(blob)
+
+            const link = document.createElement("a")
+            link.href = url
+            link.download = `reserva_0${reserva.value.id}_2026.pdf`
+
+            document.body.appendChild(link)
+            link.click()
+
+            link.remove()
+            window.URL.revokeObjectURL(url)
+
+        } catch (error) {
+            console.error("Error descargando PDF:", error)
+        }
     }
 
     const formatDate = (fecha) => {

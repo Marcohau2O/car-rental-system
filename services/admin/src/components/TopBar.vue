@@ -19,12 +19,12 @@
 
     <!-- Derecha -->
     <div class="flex items-center gap-4 md:gap-6">
-      <button class="text-gray-600 hover:text-gray-900 relative hidden sm:block">
+      <!-- <button class="text-gray-600 hover:text-gray-900 relative hidden sm:block">
         <span class="text-2xl">🔔</span>
         <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
           3
         </span>
-      </button>
+      </button> -->
 
       <div class="flex items-center gap-3 pl-4 md:pl-6 border-l border-gray-200">
         <div class="text-right hidden sm:block">

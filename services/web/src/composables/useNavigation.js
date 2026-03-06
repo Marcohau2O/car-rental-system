@@ -15,9 +15,10 @@ export function useNavigation() {
     const goCarDetail = (id) => router.push(`/car-detail/${id}`)
     const goCotizar = (id) => router.push(`/cotizar/auto/${id}`)
     const goCheckout = (id) => router.push(`/checkout/${id}`)
+    const goContrato = (id) => router.push(`/contrato/${id}`)
     const goSuccess = (id) => router.push(`/success/${id}`)
 
     return {
-        goLogin, goRegistro, goHome, goMisReservas, goContactanos, goOficinas, goCotizar, goCars, goCarDetail, goCheckout, goSuccess
+        goLogin, goRegistro, goHome, goMisReservas, goContactanos, goOficinas, goCotizar, goCars, goCarDetail, goCheckout, goContrato, goSuccess
     }
 }

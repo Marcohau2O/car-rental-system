@@ -8,7 +8,7 @@
                     ☰
                 </button>
                 <a @click="navigateHome" class="text-2xl font-bold text-white tracking-wide cursor-pointer hover:text-[#ff6b00] transition duration-300">
-                    Auto<span class="text-[#ff6b00]">Rent</span>
+                    Riviera<span class="text-[#ff6b00]">Rentals</span>
                 </a>
                 <div class="hidden md:flex gap-8 font-medium">
                     <a @click="navigateHome" class="nav-link">Inicio</a>
@@ -81,6 +81,7 @@
     import { ref, computed } from "vue"
     import { useNavigation } from '../composables/useNavigation';
     import { useAuthStore } from '../store/auth.store';
+    import { toastSuccess } from "../utils/alerts";
 
     const { goHome, goCars, goContactanos, goOficinas, goLogin, goMisReservas } = useNavigation()
     const isOpen = ref(false)
@@ -97,7 +98,11 @@
 
     const logout = () => {
         auth.logoutStore();
-        goHome();
+
+        toastSuccess("Sesión cerrada Correctamente")
+        setTimeout(() => {
+            goHome();
+        }, 1000)
     }
 </script>
 

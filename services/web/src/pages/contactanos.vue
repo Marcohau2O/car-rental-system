@@ -31,22 +31,22 @@
                         <div class="space-y-4 text-gray-700">
                             <div class="contact-item">
                                 <span>Empresa</span>
-                                <strong>AutoRent</strong>
+                                <strong>Riviera Rentals</strong>
                             </div>
 
-                            <div class="contact-item">
+                            <!-- <div class="contact-item">
                                 <span>Dueño</span>
                                 <strong>Nicolas Simioni</strong>
-                            </div>
+                            </div> -->
 
                             <div class="contact-item">
                                 <span>Teléfono</span>
-                                <strong>+52 998 000 0000</strong>
+                                <strong>+52 9983005859</strong>
                             </div>
 
                             <div class="contact-item">
                                 <span>Email</span>
-                                <strong>contacto@rentcar.com</strong>
+                                <strong>info@rivierarentals.com.mx</strong>
                             </div>
 
                             <div class="contact-item">
@@ -62,10 +62,10 @@
                                 WhatsApp
                             </a>
 
-                            <a href="tel:9980000000"
+                            <!-- <a href="tel:9980000000"
                                 class="btn-call">
                                 Llamar
-                            </a>
+                            </a> -->
 
                             <a href="mailto:contacto@rentcar.com"
                                 class="btn-mail">

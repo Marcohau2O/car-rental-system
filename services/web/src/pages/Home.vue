@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-[#f5f5f5] overflow-hidden">
         <Navbar/>
         
-        <section class="container mx-auto px-4 py-20 md:py-28">
+        <section class="container mx-auto px-4 py-20 md:py-28 panel1">
 
             <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#ff6b00]/20 blur-3xl rounded-full"></div>
 
@@ -33,23 +33,23 @@
             </div>
         </section>
         
-        <section ref="searchSection" class="bg-white py-12">
+        <section ref="searchSection" class="bg-white py-12 panel2">
             <div class="container mx-auto px-4">
                 <CarFilter @search="handleSearch"/>
             </div>
         </section>
 
-        <section class="py-16 bg-gray-50">
+        <section class="py-16 bg-gray-50 panel3">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-10">
-                    <h2 class="text-4xl font-bold text-gray-900">¿Por qué elegir AutoRent?</h2>
+                    <h2 class="text-4xl font-bold text-gray-900">¿Por qué elegir Riviera Rentals?</h2>
                     <p class="text-gray-500 mt-2 text-sm">Seguro y Rapido</p>
                 </div>
                 <div class="grid md:grid-cols-3 gap-10">
                     <div class="benefit-card">
                         <div class="icon-box">🚗</div>
-                        <h3>Renta sin Trajeta de crédito</h3>
-                        <p>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Renta sin Trajeta de crédito</h3>
+                        <p class="text-gray-500 leading-relaxed">
                            Elegimos entre cientos de vehículos de diferentes marcas y modelos 
                         </p>
                     </div>
@@ -67,7 +67,7 @@
             </div>
         </section>
 
-        <section class="container mx-auto px-4 py-16">
+        <section class="container mx-auto px-4 py-16 panel4">
 
             <VehicleCarousel :vehicles="vehicles"/>
 
@@ -198,5 +198,21 @@ onMounted(async () => {
 
 .btn-reservar:active {
     transform: scale(.96);
+}
+
+.panel {
+    position: relative;
+}
+
+.panel1 {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.panel2
+.panel3
+.panel4 {
+    min-height: auto;
 }
 </style>

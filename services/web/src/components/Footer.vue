@@ -5,7 +5,7 @@
 
                 <div>
                     <h3 class="text-3xl font-bold text-white mb-4 tracking-wide">
-                        Auto<span class="text-[#ff6b00]">Rent</span>
+                        Riviera<span class="text-[#ff6b00]">Rentals</span>
                     </h3>
                     <p class="text-sm text-gray-400 leading-relaxed">
                         Renta de autos confiable, rápida y sin complicaciones.
@@ -45,7 +45,7 @@
 
             <div class="border-t border-white/10 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-sm text-gray-500">
-                    © {{ new Date().getFullYear() }} AutoRent. Todos los derechos reservados.
+                    © {{ new Date().getFullYear() }} Riviera Rentals. Todos los derechos reservados.
                 </p>
 
                 <div class="flex gap-6 text-sm">

@@ -96,6 +96,27 @@
             ${{ reserva.total }}
           </span>
         </div>
+        <section v-if="reserva.pago">
+          <div class="p-3 rounded mb-2">
+            <p><strong>Método:</strong> {{ reserva.pago.metodo }}</p>
+            <p>
+              <strong>Estado:</strong>
+              <span :class="estadoPago(reserva.pago.estado)" class="px-2 py-1 rounded text-sm font-semibold ml-2">
+                {{ reserva.pago.estado }}
+              </span>
+            </p>
+
+            <div class="mt-2 space-x-2">
+              <button @click="aprobarPago(reserva.pago.id)" class="bg-green-600 text-white px-3 py-1 rounded">
+                Aprobar
+              </button>
+
+              <button @click="rechazarPago(reserva.pago.id)" class="bg-red-600 text-white px-3 py-1 rounded">
+                Rechazar
+              </button>
+            </div>
+          </div>
+        </section>
       </div>
 
       <!-- Loading -->
@@ -129,6 +150,16 @@
             case 'CANCELADA': return 'bg-red-100 text-red-800'
             default: return 'bg-gray-100 text-gray-700'
         }
+    }
+
+    const estadoPago = (estadoPago) => {
+      switch (estadoPago) {
+        case 'PENDIENTE' : return 'bg-yellow-100 text-yellow-800'
+        case 'RECHAZADO' : return 'bg-red-100 text-red-800'
+        case 'ANTICIPO' : return 'bg-orange-100 text-orange-800'
+        case 'PAGADO COMPLETO' : return 'bg-green-100 text-green-800'
+        default: return 'bg-gray-100 text-gray-700'
+      }
     }
 
     onMounted(async () => {

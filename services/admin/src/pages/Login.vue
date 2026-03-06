@@ -2,9 +2,9 @@
     <div class="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center">
         <div class="container mx-auto px-4">
             <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
-                <div class="flex justify-center">
+                <!-- <div class="flex justify-center">
                     <img src="../assets/img/RentaCar.png" alt="" class="h-[13rem] w-auto object-contain"></img>
-                </div>
+                </div> -->
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Panel Admin</h1>
                 <p class="text-gray-600 mb-6">Inicia sessión para acceder</p>
 

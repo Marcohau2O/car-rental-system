@@ -2,12 +2,13 @@ import path from "path";
 import { AutoService } from "../services/auto.service.js";
 import { logAction } from "../utils/logAction.js";
 import fs from "fs"
+import { asyncHandler } from "../middlewares/asyncHandler.js";
 
-export const getAutos = async (_, res) => {
+export const getAutos = asyncHandler(async (_, res) => {
   res.json(await AutoService.getAll());
-};
+});
 
-export const getAuto = async (req, res) => {
+export const getAuto = asyncHandler(async (req, res) => {
   const id = Number(req.params.id);
 
   if (!id) {
@@ -23,11 +24,9 @@ export const getAuto = async (req, res) => {
   }
   
   res.json(auto);
-};
+});
 
-export const createAuto = async (req, res) => {
-  try {  
-
+export const createAuto = asyncHandler(async (req, res) => {
     const {
       marca,
       modelo,
@@ -67,14 +66,10 @@ export const createAuto = async (req, res) => {
 
     return res.status(201).json(auto)
 
-  } catch (error) {
-    console.error(error)
-    return res.status(500).json({ message: 'Error al crear auto' })
-  }
-}
+  });
 
 
-export const updateAuto = async (req, res) => {
+export const updateAuto = asyncHandler(async (req, res) => {
   const id = Number(req.params.id)
 
   const autoActual = await AutoService.getById(id)
@@ -123,9 +118,9 @@ export const updateAuto = async (req, res) => {
   })
 
   res.json(autoActualizado)
-};
+});
 
-export const deleteAuto = async (req, res) => {
+export const deleteAuto = asyncHandler(async (req, res) => {
   await AutoService.delete(+req.params.id);
 
   await logAction({
@@ -135,4 +130,4 @@ export const deleteAuto = async (req, res) => {
   });
 
   res.json({ message: "Auto eliminado" });
-};
+});
