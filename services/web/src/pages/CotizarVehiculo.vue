@@ -16,7 +16,7 @@
 
         <!-- CARD FORMULARIO -->
         <div class="md:col-span-2 bg-white rounded-2xl shadow-xl p-8 h-fit">
-          <h2 class="text-xl font-bold mb-6 text-[#ff6b00]">
+          <h2 class="text-xl font-bold mb-6 text-[#e5be01]">
             Datos de renta
           </h2>
 
@@ -101,7 +101,7 @@
 
           <!-- INFO VEHÍCULO -->
           <div
-            class="bg-gradient-to-r from-black via-[#111] to-[#ff6b00] 
+            class="bg-gradient-to-r from-black via-[#111] to-[#e5be01] 
                    text-white rounded-2xl shadow-xl p-8"
           >
             <h2 class="text-2xl font-bold mb-6">
@@ -345,12 +345,12 @@
 
 .input-group input:focus,
 .input-group select:focus {
-  border-color: #ff6b00;
+  border-color: #e5be01;
   box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
 }
 
 .btn-button {
-  background: #ff6b00;
+  background: #e5be01;
   color: white;
   padding: 14px;
   border-radius: 14px;

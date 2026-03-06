@@ -106,12 +106,12 @@ const handleSubmit = () => {
 
 .input-group input:focus,
 .input-group select:focus {
-    border-color: #ff6b00;
+    border-color: #e5be01;
     box-shadow: 0 0 0 3px rgba(255, 107, 0, .15);
 }
 
 .btn-search {
-    background: #ff6b00;
+    background: #e5be01;
     color: white;
     padding: 14px;
     border-radius: 14px;

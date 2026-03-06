@@ -95,7 +95,7 @@
 }
 
 .step-card:hover .step-number{
-  background:#ff6b00;
+  background:#e5be01;
   transform:scale(1.1) rotate(-6deg);
   box-shadow:0 20px 40px rgba(255,107,0,.45);
 }

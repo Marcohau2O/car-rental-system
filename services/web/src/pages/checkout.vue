@@ -2,15 +2,15 @@
     <div class="min-h-screen bg-[#f6f7fb] overflow-hidden">
         <Navbar/>
 
-        <div class="fixed top-[-120px] right-[-120px] w-[420px] h-[420px] bg-[#ff6b00] opacity-20 blur-[130px] rounded-full animate-glow"></div>
-        <div class="fixed bottom-[-120px] left-[-120px] w-[420px] h-[420px] bg-[#ff6b00] opacity-10 blur-[130px] rounded-full animate-glow"></div>
+        <div class="fixed top-[-120px] right-[-120px] w-[420px] h-[420px] bg-[#e5be01] opacity-20 blur-[130px] rounded-full animate-glow"></div>
+        <div class="fixed bottom-[-120px] left-[-120px] w-[420px] h-[420px] bg-[#e5be01] opacity-10 blur-[130px] rounded-full animate-glow"></div>
 
         <div class="max-w-7xl mx-auto px-4 py-10 pt-28 relative">
             <div class="grid md:grid-cols-3 gap-10">
                 <div class="md:col-span-2 space-y-6">
                     <div class="card-box">
                         <h2 class="text-3xl font-extrabold mb-6 hero-title">
-                            Detalles de <span class="text-[#ff6b00]">Reserva</span>
+                            Detalles de <span class="text-[#e5be01]">Reserva</span>
                         </h2>
 
                         <div class="mb-8">
@@ -138,7 +138,7 @@
 
                         <div class="flex justify-between font-bold text-xl mb-5">
                             <span>Total:</span>
-                            <span class="text-[#ff6b00]">${{ total }}</span>
+                            <span class="text-[#e5be01]">${{ total }}</span>
                         </div>
 
                         <button type="button" @click="goToPayment" class="w-full btn-pay">
@@ -383,7 +383,7 @@
 
 .input:focus {
   outline:none;
-  border-color:#ff6b00;
+  border-color:#e5be01;
   box-shadow:0 0 0 3px rgba(255,107,0,.15);
 }
 
@@ -397,7 +397,7 @@
   background:#fafafa;
 }
 .upload-box:hover {
-  border-color:#ff6b00;
+  border-color:#e5be01;
   background:#fff7f0;
 }
 
@@ -421,7 +421,7 @@
 }
 
 .btn-pay {
-  background:#ff6b00;
+  background:#e5be01;
   color:white;
   padding:16px;
   border-radius:14px;

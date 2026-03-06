@@ -36,7 +36,7 @@
                                     {{ car.marca }} {{ car.modelo }}
                                 </h3>
 
-                                <div class="text-xl font-bold text-[#ff6b00] mt-1">
+                                <div class="text-xl font-bold text-[#e5be01] mt-1">
                                     ${{ car.precioPorDia }}
                                     <span class="text-sm text-gray-500 font-normal">/dia</span>
                                 </div>
@@ -143,7 +143,7 @@
 }
 
 .btn-reservar {
-    background: #ff6b00;
+    background: #e5be01;
     color: white;
     padding: 10px 22px;
     border-radius: 10px;
@@ -178,7 +178,7 @@
 }
 
 .nav-btn:hover {
-    background: #ff6b00;
+    background: #e5be01;
     color: white;
     transform: translateY(-50%) scale(1.1);
 }

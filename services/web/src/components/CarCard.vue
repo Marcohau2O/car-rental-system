@@ -109,7 +109,7 @@
 .price{
   font-size:22px;
   font-weight:800;
-  color:#ff6b00;
+  color:#e5be01;
   margin-bottom:14px;
 }
 
@@ -131,7 +131,7 @@
 }
 
 .btn:hover{
-  background:#ff6b00;
+  background:#e5be01;
   transform:translateY(-2px);
   box-shadow:0 18px 35px rgba(255,107,0,.35);
 }

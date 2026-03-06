@@ -5,13 +5,13 @@
         <section class="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <div class="relative overflow-hidden rounded-3xl mb-14">
 
-                <div class="absolute inset-0 bg-gradient-to-r from-black via-[#111] to-[#ff6b00]"></div>
-                <div class="absolute -right-32 -top-32 w-[420px] h-[420px] bg-[#ff6b00] opacity-20 blur-[120px] rounded-full animate-glow"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black via-[#111] to-[#e5be01]"></div>
+                <div class="absolute -right-32 -top-32 w-[420px] h-[420px] bg-[#e5be01] opacity-20 blur-[120px] rounded-full animate-glow"></div>
                 
                 <div class="relative px-8 md:px-14 py-14 md:py20 text-center">
                     <h1 class="hero-title text-3xl md:text-5xl font-extrabold text-white tracking-tight">
                         Contáctanos
-                        <span class="text-[#ff6b00] block">Estamos para ayudarte</span>
+                        <span class="text-[#e5be01] block">Estamos para ayudarte</span>
                     </h1>
                     <p class="hero-sub text-gray-300 mt-4 text-lg">
                         Reserva fácil, rápido y seguro en Cancún
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="relative group">
-                        <div class="absolute inset-0 bg-[#ff6b00] opacity-0 group-hover:opacity-20 blur-2xl transition"></div>
+                        <div class="absolute inset-0 bg-[#e5be01] opacity-0 group-hover:opacity-20 blur-2xl transition"></div>
                         <img 
                             src="https://images.unsplash.com/photo-1521791136064-7986c2920216"
                             class="rounded-2xl shadow-2xl w-full h-[320px] object-cover
@@ -153,7 +153,7 @@ import Footer from '../components/Footer.vue'
   transition:.3s;
 }
 .btn-mail:hover{
-  background:#ff6b00;
+  background:#e5be01;
   transform:translateY(-3px);
   box-shadow:0 15px 30px rgba(255,107,0,.45);
 }

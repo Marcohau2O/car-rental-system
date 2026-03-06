@@ -2,13 +2,13 @@
     <div class="min-h-screen bg-[#f6f7fb] overflow-hidden">
         <Navbar/>
 
-        <div class="fixed top-[-120px] right-[-120px] w-[420px] h-[420px] bg-[#ff6b00] opacity-20 blur-[130px] rounded-full animate-glow"></div>
-        <div class="fixed bottom-[-120px] left-[-120px] w-[420px] h-[420px] bg-[#ff6b00] opacity-10 blur-[130px] rounded-full animate-glow"></div>
+        <div class="fixed top-[-120px] right-[-120px] w-[420px] h-[420px] bg-[#e5be01] opacity-20 blur-[130px] rounded-full animate-glow"></div>
+        <div class="fixed bottom-[-120px] left-[-120px] w-[420px] h-[420px] bg-[#e5be01] opacity-10 blur-[130px] rounded-full animate-glow"></div>
 
         <div class="max-w-7xl mx-auto px-4 py-10 pt-28 relative">
             <div class="mb-10">
                 <h1 class="text-4xl font-extrabold hero-title">
-                    Mis <span class="text-[#ff6b00]">Reservas</span>
+                    Mis <span class="text-[#e5be01]">Reservas</span>
                 </h1>
                 <p class="text-gray-500 mt-2">Consulta el estado de tus rentas</p>
             </div>
@@ -81,7 +81,7 @@
                             <p class="text-sm text-gray-500">
                                 Total pagado
                             </p>
-                            <p class="text-2xl font-extrabold text-[#ff6b00]">
+                            <p class="text-2xl font-extrabold text-[#e5be01]">
                                 ${{ reserva.total }}
                             </p>
                         </div>
@@ -195,7 +195,7 @@
   transition:.3s;
 }
 .btn-details:hover {
-  background:#ff6b00;
+  background:#e5be01;
   transform:translateY(-2px);
   box-shadow:0 10px 25px rgba(255,107,0,.4);
 }

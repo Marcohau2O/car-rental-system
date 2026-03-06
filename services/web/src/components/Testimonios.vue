@@ -14,14 +14,14 @@
                 :key="index"
                 class="bg-white p-7 rounded-2xl transition duration-300 border border-gray-100 relative overflow-hidden testimonio"
                 >
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#ff6b00]/20 rounded-full blur-3xl group-hover:scale-125 transition"></div>
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#e5be01]/20 rounded-full blur-3xl group-hover:scale-125 transition"></div>
 
                 <p class="text-gray-700 italic mb-6 leading-relaxed relative z-10">
                     “{{ testimonio.comment }}”
                 </p>
 
                 <div class="flex items-center gap-4 relative z-10">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#ff6b00] to-[#ff8533] text-white flex items-center justify-center font-bold text-lg shadow">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#e5be01] to-[#ff8533] text-white flex items-center justify-center font-bold text-lg shadow">
                         {{ testimonio.name.charAt(0) }}
                     </div>
 

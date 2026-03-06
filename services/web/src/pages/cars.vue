@@ -6,14 +6,14 @@
 
     <div class="relative overflow-hidden rounded-3xl mb-10">
       
-      <div class="absolute inset-0 bg-gradient-to-r from-black via-[#111] to-[#ff6b00]"></div>
-      <div class="absolute -right-32 -top-32 w-[420px] h-[420px] bg-[#ff6b00] opacity-20 blur-[120px] rounded-full animate-pulse"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black via-[#111] to-[#e5be01]"></div>
+      <div class="absolute -right-32 -top-32 w-[420px] h-[420px] bg-[#e5be01] opacity-20 blur-[120px] rounded-full animate-pulse"></div>
       <div class="relative px-8 md:px-14 py-12 md:py-16 flex items-center min-h-[180px]">
 
         <div class="max-w-xl">
           <h1 class="hero-title text-3xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
             Explora nuestros
-            <span class="text-[#ff6b00]"> Vehículos</span>
+            <span class="text-[#e5be01]"> Vehículos</span>
           </h1>
           <p class="hero-sub text-gray-300 mt-4 text-lg">
             Encuentra el auto perfecto para tu viaje
@@ -179,7 +179,7 @@ const navigateTo = (carId) => {
 
 .input-group input:focus,
 .input-group select:focus {
-    border-color: #ff6b00;
+    border-color: #e5be01;
     box-shadow: 0 0 0 3px rgba(255, 107, 0, .15);
 }
 
@@ -194,7 +194,7 @@ const navigateTo = (carId) => {
 }
 
 .btn-clear:hover {
-  background: #ff6b00;
+  background: #e5be01;
   transform: translateY(-2px);
   box-shadow:0 18px 35px rgba(255,107,0,.45);
 }

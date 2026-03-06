@@ -121,7 +121,7 @@
 
 <style scoped>
 .btn-button {
-    background: #ff6b00;
+    background: #e5be01;
     color: white;
     padding: 10px 14px;
     border-radius: 16px;
@@ -175,7 +175,7 @@
 }
 
 .input-style input:focus {
-    border-color: #ff6b00;
+    border-color: #e5be01;
     box-shadow: 0 0 0 3px rgba(255, 107, 0, .15);
 }
 </style>

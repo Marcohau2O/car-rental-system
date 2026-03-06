@@ -2,8 +2,8 @@
     <div class="min-h-screen bg-[#f5f5f5] overflow-hidden">
         <Navbar/>
 
-        <div class="fixed top-[-150px] right-[-150px] w-[500px] h-[500px] bg-[#ff6b00] opacity-20 blur-[140px] rounded-full"></div>
-        <div class="fixed bottom-[-150px] left-[-150px] w-[500px] h-[500px] bg-[#ff6b00] opacity-10 blur-[140px] rounded-full"></div>
+        <div class="fixed top-[-150px] right-[-150px] w-[500px] h-[500px] bg-[#e5be01] opacity-20 blur-[140px] rounded-full"></div>
+        <div class="fixed bottom-[-150px] left-[-150px] w-[500px] h-[500px] bg-[#e5be01] opacity-10 blur-[140px] rounded-full"></div>
 
         <div class="max-w-7xl mx-auto px-4 py-10 pt-28 relative">
             <div class="grid lg:grid-cols-3 gap-10">
@@ -24,7 +24,7 @@
                     <div class="card-box sticky top-24">
                         <div class="mb-6">
                             <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 hero-title">{{ car.marca }} {{ car.modelo }}</h1>
-                            <p class="text-2xl text-[#FF6B00] font-bold mt-3">
+                            <p class="text-2xl text-[#e5be01] font-bold mt-3">
                                 ${{ car.precioPorDia }} <span class="text-sm text-gray-500">/ dia</span>
                             </p>
                         </div>
@@ -116,7 +116,7 @@
 
 <style scoped>
 .btn-button {
-    background: #ff6b00;
+    background: #e5be01;
     color: white;
     padding: 12px 18px;
     border-radius: 16px;

@@ -4,13 +4,13 @@
         
         <section class="container mx-auto px-4 py-20 md:py-28 panel1">
 
-            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#ff6b00]/20 blur-3xl rounded-full"></div>
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#e5be01]/20 blur-3xl rounded-full"></div>
 
             <div class="grid md:grid-cols-2 gap-14 items-center">
                 <div class="animate-fade-up">
                     <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tightd">
                         Renta de Autos <br>
-                        <span class="text-[#ff6b00]">Fácil y Confiable</span>
+                        <span class="text-[#e5be01]">Fácil y Confiable</span>
                     </h1>
                     <p class="text-xl text-gray-600 mb-8">
                         Encuentra el auto perfecto para tu viaje. Tarifas competitivas, proceso simple y atención al cliente excepcional.
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div>
-                    <!-- <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-[#ff6b00]/20 blur-3xl rounded-full"></div> -->
+                    <!-- <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-[#e5be01]/20 blur-3xl rounded-full"></div> -->
 
                     <div class="relative h-[420px] rounded-3xl overflow-hidden shadow-2xl group">
                         <img src="../assets/imgs/car-image.jpg" alt="Auto de lujo" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
@@ -173,27 +173,27 @@ onMounted(async () => {
 }
 
 .benefit-card:hover .icon-box {
-    background:#ff6b00;
+    background:#e5be01;
     transform:scale(1.1) rotate(-6deg);
     box-shadow:0 20px 40px rgba(255,107,0,.45);
 }
 
 .btn-reservar {
-    background: #ff6b00;
+    background: #e5be01;
     color: white;
     padding: 16px 26px;
     border-radius: 16px;
     font-weight: 600;
     letter-spacing: .3px;
     transition: .35s;
-    box-shadow: 0 15px 35px rgba(255, 107, 0, .35);
+    box-shadow: 0 15px 35px rgba(225, 232, 2, 0.45);
     white-space: nowrap;
 }
 
 .btn-reservar:hover {
-    background: #ff8533;
+    background: #c5a503;
     transform: translateY(-3px);
-    box-shadow:0 25px 60px rgba(255,107,0,.45);
+    box-shadow:0 25px 60px rgba(225, 232, 6, 0.45);
 }
 
 .btn-reservar:active {

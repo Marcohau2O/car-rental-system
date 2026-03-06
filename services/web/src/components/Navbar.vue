@@ -7,8 +7,8 @@
                 @click="isOpen = true">
                     ☰
                 </button>
-                <a @click="navigateHome" class="text-2xl font-bold text-white tracking-wide cursor-pointer hover:text-[#ff6b00] transition duration-300">
-                    Riviera<span class="text-[#ff6b00]">Rentals</span>
+                <a @click="navigateHome" class="text-2xl font-bold text-white tracking-wide cursor-pointer hover:text-[#282828] transition duration-300">
+                    Riviera<span class="text-[#e5be01]">Rentals</span>
                 </a>
                 <div class="hidden md:flex gap-8 font-medium">
                     <a @click="navigateHome" class="nav-link">Inicio</a>
@@ -19,13 +19,13 @@
             </div>
 
             <div class="hidden md:flex items-center gap-4">
-                <button v-if="!isAutenticado" @click="navigateLogin" class="px-5 py-2 rounded-xl font-semibold border border-[#ff6b00] text-[#ff6b00] 
-                hover:bg-[#ff6b00] hover:text-white transition duration-300 shadow hover:shadow-orange-500/30">
+                <button v-if="!isAutenticado" @click="navigateLogin" class="px-5 py-2 rounded-xl font-semibold border border-[#e5be01] text-[#e5be01] 
+                hover:bg-[#e5be01] hover:text-white transition duration-300 shadow hover:shadow-orange-500/30">
                     Inicia sesión
                 </button>
                 <template v-else>
                     <button @click="navigateReservas"
-                        class="text-gray-300 hover:text-[#ff6b00] font-medium transition">
+                        class="text-gray-300 hover:text-[#e5be01] font-medium transition">
                         Mis reservas
                     </button>
 
@@ -46,7 +46,7 @@
 
         <aside class="fixed top-0 left-0 h-full w-72 bg-[#0f0f0f]/95 border-r border-white/10 shadow-lg z-50 transform transition-transform duration-300" :class="isOpen ? 'translate-x-0' : '-translate-x-full'">
             <div class="p-6 flex justify-between items-center border-b border-white/10 bg-[#0f0f0f]/95">
-                <span class="text-xl font-bold text-white">Auto<span class="text-[#ff6b00]">Rent</span></span>
+                <span class="text-xl font-bold text-white">Auto<span class="text-[#e5be01]">Rent</span></span>
                 <button @click="isOpen = false"  class="bg-red-600 text-white w-8 h-8 rounded-full">✕</button>
             </div>
 
@@ -58,7 +58,7 @@
                 
                 <hr class="border-white/10 bg-[#0f0f0f]/95">
 
-                <button v-if="!isAutenticado" @click="navigateLogin" class="bg-[#ff6b00] hover:bg-[#ff8533] text-white py-3 rounded-xl font-semibold transition shadow-lg">
+                <button v-if="!isAutenticado" @click="navigateLogin" class="bg-[#e5be01] hover:bg-[#ff8533] text-white py-3 rounded-xl font-semibold transition shadow-lg">
                     Iniciar sesión
                 </button>
 
@@ -114,7 +114,7 @@
     transition: .3s;
 }
 .nav-link:hover {
-    color: #ff6b00;
+    color: #e5be01;
 }
 .nav-link::after {
     content: "";
@@ -123,7 +123,7 @@
     left: 0;
     width: 0%;
     height: 2px;
-    background: #ff6b00;
+    background: #e5be01;
     transition: .3s;
 }
 .nav-link:hover::after {
@@ -137,7 +137,7 @@
 }
 
 .mobile-link:hover {
-    color: #ff6b00;
+    color: #e5be01;
     transform: translateX(6px);
 }
 </style>

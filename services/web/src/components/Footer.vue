@@ -5,7 +5,7 @@
 
                 <div>
                     <h3 class="text-3xl font-bold text-white mb-4 tracking-wide">
-                        Riviera<span class="text-[#ff6b00]">Rentals</span>
+                        Riviera<span class="text-[#e5be01]">Rentals</span>
                     </h3>
                     <p class="text-sm text-gray-400 leading-relaxed">
                         Renta de autos confiable, rápida y sin complicaciones.
@@ -73,7 +73,7 @@
 }
 
 .footer-link:hover {
-    color: #ff6b00;
+    color: #e5be01;
     padding-left: 6px;
 }
 
@@ -90,7 +90,7 @@
   transition:.3s;
 }
 .social:hover{
-  background:#ff6b00;
+  background:#e5be01;
   color:white;
   transform:translateY(-4px);
   box-shadow:0 10px 25px rgba(255,107,0,.4);

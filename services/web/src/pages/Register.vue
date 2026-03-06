@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#020617] to-[#1e293b] flex items-center justify-center relative overflow-hidden">
-        <div class="absolute top-[-120px] right-[-120px] w-[350px] h-[350px] bg-[#ff6b00] opacity-30 blur-[120px] rounded-full"></div>
-        <div class="absolute bottom-[-120px] left-[-120] w-[350px] h-[350px] bg-[#ff6b00] opacity-20 blur-[120px] rounded-full"></div>
+        <div class="absolute top-[-120px] right-[-120px] w-[350px] h-[350px] bg-[#e5be01] opacity-30 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-120px] left-[-120] w-[350px] h-[350px] bg-[#e5be01] opacity-20 blur-[120px] rounded-full"></div>
 
         <div class="relative w-full max-w-[33rem] mx-auto px-6">
             <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-8 animate-fade-in">
@@ -113,7 +113,7 @@
 
 
 .btn-button {
-    background: #ff6b00;
+    background: #e5be01;
     color: white;
     padding: 16px 26px;
     border-radius: 16px;
@@ -125,7 +125,7 @@
 }
 
 .btn-button:hover {
-    background: #ff8533;
+    background: #c5a503;
     transform: translateY(-3px);
     box-shadow: 0 25px 60px rgba(255, 107, 0, .45);
 }
@@ -158,20 +158,20 @@
 }
 
 .input-group input:focus {
-    border-color: #ff6b00;
+    border-color: #e5be01;
     box-shadow: 0 0 0 3px rgba(255, 107, 0, .15);
     transform: scale(1.02);
 }
 
 .link {
-    color: #ff6b00;
+    color: #e5be01;
     position: relative;
     cursor: pointer;
     transition: .3s;
 }
 
 .link:hover {
-    color: #ff6b00;
+    color: #e5be01;
 }
 
 .link::after {
@@ -181,7 +181,7 @@
     left: 0;
     width: 0%;
     height: 2px;
-    background: #ff6b00;
+    background: #e5be01;
     transition: .3s;
 }
 
